@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>醉酒塔羅 - 雷諾曼占卜系統</title>
+    <title>醉酒雷諾曼 - 經典 36 張占卜系統</title>
     <!-- 網頁分頁圖標 (Favicon) 設定 -->
     <link rel="icon" type="image/jpeg" href="tarot_drunk.jpg">
 
     <!-- 社群分享預覽標籤 -->
-    <meta property="og:title" content="醉酒塔羅 - 雷諾曼占卜系統">
+    <meta property="og:title" content="醉酒雷諾曼 - 占卜系統">
     <meta property="og:description" content="經典 36 張雷諾曼占卜系統，解析現實細節與生活指引。">
     <meta property="og:image" content="https://tarotdrunktw-png.github.io/tarot_app/tarot_drunk.jpg">
     <meta property="og:url" content="https://tarotdrunktw-png.github.io/tarot_app/">
@@ -22,7 +22,7 @@
             --tarot-bg: rgba(26, 30, 43, 0.9);
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
-            --accent: #0ea5e9; /* 改為雷諾曼常用的神祕藍色系 */
+            --accent: #0ea5e9;
             --accent-hover: #38bdf8;
             --pos-green: #2ecc71;
             --neu-yellow: #f1c40f;
@@ -186,7 +186,17 @@
             width: 100%; 
             background: transparent !important;
         }
-        .spread-container { width: 100%; max-width: 1000px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -webkit-box-direction: normal; -ms-flex-direction: column; flex-direction: column; -webkit-box-align: center; -ms-flex-align: center; align-items: center; gap: 16px; }
+        .spread-container { 
+            width: 100%; 
+            max-width: 500px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 16px; 
+        }
+        .spread-container.is-wide {
+            max-width: 1000px;
+        }
 
         .welcome-box {
             text-align: center;
@@ -229,10 +239,9 @@
             text-align: center;
         }
 
-        /* 雷諾曼卡片樣式盒子 */
+        /* 詳細文字卡片樣式 */
         .leno-card-box {
             width: 100%;
-            max-width: 450px;
             background-color: var(--card-bg);
             border: 1px solid #2d3343;
             border-radius: 6px;
@@ -245,22 +254,22 @@
         .banner {
             background-color: #1e293b;
             color: #38bdf8;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
-            padding: 6px 10px;
+            padding: 5px 8px;
             text-align: center;
             border-bottom: 1px solid #334155;
         }
         .leno-content {
             background-color: var(--inner-bg);
-            padding: 10px;
+            padding: 8px;
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
         .leno-img {
-            width: 70px;
-            height: 105px;
+            width: 60px;
+            height: 90px;
             object-fit: cover;
             border: 1px solid #444;
             background: #000;
@@ -271,42 +280,93 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            font-size: 12px;
+            gap: 3px;
+            font-size: 11px;
         }
         .leno-header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            flex-wrap: wrap;
             gap: 4px;
         }
-        .leno-name { font-size: 14px; color: #f8fafc; }
-        .polarity-badge { padding: 2px 6px; border-radius: 3px; font-size: 11px; color: #000; font-weight: bold; }
+        .leno-name { font-size: 13px; color: #f8fafc; }
+        .polarity-badge { padding: 1px 5px; border-radius: 3px; font-size: 10px; color: #000; font-weight: bold; }
         .badge-pos { background-color: var(--pos-green); }
         .badge-neu { background-color: var(--neu-yellow); }
         .badge-neg { background-color: var(--neg-red); color: #fff; }
 
         .leno-desc-box {
             background: #242938;
-            padding: 6px 8px;
+            padding: 5px 6px;
             border-radius: 4px;
             color: #cbd5e1;
             margin-top: 2px;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
-        /* 網格牌陣排版 (用於九宮格) */
-        .grid-row {
+        /* ── 上方精美牌面總覽（格子與橫向列） ── */
+        .preview-grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .preview-grid-9 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .mini-card {
+            background: var(--card-bg);
+            border: 1px solid #2d3343;
+            border-radius: 6px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .mini-img {
+            width: 55px;
+            height: 82px;
+            object-fit: cover;
+            border: 1px solid #000;
+            border-radius: 4px;
+            background: #000;
+        }
+        .mini-title {
+            font-size: 10px;
+            color: #38bdf8;
+            font-weight: bold;
+        }
+        .mini-name {
+            font-size: 11px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* 詳情列表區塊容器 */
+        .details-list-box {
+            display: flex;
+            flex-direction: column;
             gap: 12px;
             width: 100%;
-            max-width: 600px;
+            max-width: 450px;
         }
-        @media(max-width: 600px) {
-            .grid-row { grid-template-columns: 1fr; }
+
+        /* 手機與電腦適應微調 */
+        @media(max-width: 768px) {
+            .preview-grid-9 { gap: 6px; }
+            .mini-img { width: 48px; height: 72px; }
+            .mini-title { font-size: 9px; }
+            .mini-name { font-size: 10px; }
         }
 
         .reset-home-btn {
@@ -320,7 +380,7 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
             transition: all 0.2s;
-            margin: 10px 0 20px 0;
+            margin: 10px auto;
             width: 100%;
             max-width: 450px;
             text-align: center;
@@ -378,13 +438,13 @@
 
     <div class="app-layout">
         <div class="control-panel">
-            <div class="title">🍸 醉酒塔羅 🔮 雷諾曼占卜系統</div>
+            <div class="title">🍸 醉酒雷諾曼 🔮 經典 36 張占卜系統</div>
             <div class="control-row">
                 <div class="config-box">
                     <span>選擇牌陣:</span>
                     <select id="spreadSelect" onchange="toggleSpreadConfig()">
                         <option value="diary">🃏 雷諾曼日記 (單張)</option>
-                        <option value="line3">📏 三張直線</option>
+                        <option value="line3">📏 三張直線 (橫向牌列)</option>
                         <option value="box9">🔲 九宮格心靈透視 (9張)</option>
                         <option value="free">🎲 自訂抽牌張數</option>
                     </select>
@@ -402,7 +462,7 @@
         <div class="workspace">
             <div id="spreadArea" class="spread-container">
                 <div class="welcome-box">
-                    <div class="welcome-title">✨ 歡迎來到 醉酒塔羅 - 雷諾曼占卜系統 ✨</div>
+                    <div class="welcome-title">✨ 歡迎來到 醉酒雷諾曼占卜系統 ✨</div>
                     <div class="welcome-subtitle">✨ 請點擊上方選單與按鈕開始進行占卜 ✨</div>
                     <div class="welcome-instructions">
                         <div class="welcome-instructions-title">使用方式：</div>
@@ -449,10 +509,10 @@
                 }
                 let response = await fetch(endpoint);
                 let data = await response.json();
-                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒塔羅，您是第：${data.value} 位深夜酒客`;
+                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒雷諾曼，您是第：${data.value} 位深夜酒客`;
             } catch (e) {
                 console.error("計數器載入失敗", e);
-                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒塔羅`;
+                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒雷諾曼`;
             }
         }
 
@@ -476,7 +536,6 @@
             else if (spreadVal === "free") drawFreeSpread();
         }
 
-        // 完整 36 張經典雷諾曼牌庫
         const LENORMAND_DECK = [
             {no: 1, name: "騎士", en: "Rider", file: "rider.avif", suit: "9♥", polarity: "正面", theme: "消息與行動", keywords: ["快速到來的消息", "新訪客", "行動力"]},
             {no: 2, name: "幸運草", en: "Clover", file: "clover.avif", suit: "6♦", polarity: "正面", theme: "短暫的幸運", keywords: ["小確幸", "意外轉機", "樂觀"]},
@@ -565,8 +624,9 @@
         }
 
         function resetToHome() {
-            let area = document.getElementById("spreadArea");
-            area.innerHTML = `
+            let container = document.getElementById("spreadArea");
+            container.classList.remove("is-wide");
+            container.innerHTML = `
                 <div class="welcome-box">
                     <div class="welcome-title">✨ 歡迎來到 醉酒塔羅 - 雷諾曼占卜系統 ✨</div>
                     <div class="welcome-subtitle">✨ 請點擊上方選單與按鈕開始進行占卜 ✨</div>
@@ -583,50 +643,106 @@
 
         function drawDailyDiary() {
             let card = getRandomLenormand(1)[0];
-            let area = document.getElementById("spreadArea");
+            let container = document.getElementById("spreadArea");
+            container.classList.remove("is-wide");
+            
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🃏 雷 諾 曼 每 日 日 記 】</h2>';
             html += '<div style="width:100%; max-width:450px;">';
             html += createLenormandBoxHtml(card, "【今日能量指引】 核心事件與提醒");
             html += '</div>';
             html += '<button class="reset-home-btn" onclick="resetToHome()">🔄 重新抽牌 (回到主頁面)</button>';
-            area.innerHTML = html;
+            container.innerHTML = html;
         }
 
+        // 三張直線：上方橫向並排預覽，下方詳細解析
         function drawLine3() {
             let cards = getRandomLenormand(3);
-            let area = document.getElementById("spreadArea");
-            let titles = ["【第一張·過去起因】", "【第二張·當前現狀】", "【第三張·未來發展】"];
-            let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 📏 三 張 直 線 牌 陣 】</h2>';
-            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
+            let container = document.getElementById("spreadArea");
+            container.classList.add("is-wide");
+            
+            let titles = ["【1. 過去起因】", "【2. 當前現狀】", "【3. 未來發展】"];
+            let html = '<h2 style="color:#f8fafc; margin-bottom:4px; text-align:center; width:100%;">【 📏 三 張 直 線 牌 陣 】</h2>';
+            html += '<div style="display:flex; flex-direction:column; gap:16px; width:100%; align-items:center;">';
+            
+            // 上方：橫向 3 張牌預覽
+            html += '<div class="preview-grid-3">';
             cards.forEach((c, idx) => {
-                html += '<div style="width:100%; max-width:450px;">' + createLenormandBoxHtml(c, titles[idx]) + '</div>';
+                let base = getBasePath();
+                let imgPath = base + "lenormand/" + c.file;
+                html += `
+                    <div class="mini-card">
+                        <div class="mini-title">位置 #${idx+1}</div>
+                        <img src="${imgPath}" class="mini-img" onerror="this.style.display='none'">
+                        <div class="mini-name">${c.name}</div>
+                    </div>
+                `;
             });
             html += '</div>';
+
+            // 下方：詳細敘述列表
+            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px;">── 詳細牌意解析 ──</div>';
+            html += '<div class="details-list-box">';
+            cards.forEach((c, idx) => {
+                html += createLenormandBoxHtml(c, titles[idx]);
+            });
+            html += '</div>';
+
             html += '<button class="reset-home-btn" onclick="resetToHome()">🔄 重新抽牌 (回到主頁面)</button>';
-            area.innerHTML = html;
+            html += '</div>';
+
+            container.innerHTML = html;
         }
 
+        // 九宮格：上方 3x3 牌面預覽，下方詳細敘述列表
         function drawBox9() {
             let cards = getRandomLenormand(9);
-            let area = document.getElementById("spreadArea");
-            let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🔲 九 宮 格 心 靈 透 視 】</h2>';
-            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%; max-width:600px;">';
+            let container = document.getElementById("spreadArea");
+            container.classList.add("is-wide");
             
-            cards.forEach((c, idx) => {
-                let posName = `【位置 #${idx+1}】`;
-                if(idx === 4) posName = "【中心核心牌】";
-                html += '<div style="width:100%; max-width:450px;">' + createLenormandBoxHtml(c, posName) + '</div>';
-            });
+            let titles = [
+                "【1. 外在環境】", "【2. 近期發展】", "【3. 遠期目標】",
+                "【4. 內心潛意識】", "【5. 核心關鍵】", "【6. 外界影響】",
+                "【7. 基礎根基】", "【8. 發展過程】", "【9. 最終結局】"
+            ];
 
+            let html = '<h2 style="color:#f8fafc; margin-bottom:4px; text-align:center; width:100%;">【 🔲 九 宮 格 心 靈 透 視 】</h2>';
+            html += '<div style="display:flex; flex-direction:column; gap:16px; width:100%; align-items:center;">';
+            
+            // 上方：純牌面九宮格預覽
+            html += '<div class="preview-grid-9">';
+            cards.forEach((c, idx) => {
+                let base = getBasePath();
+                let imgPath = base + "lenormand/" + c.file;
+                html += `
+                    <div class="mini-card">
+                        <div class="mini-title">位置 #${idx+1}</div>
+                        <img src="${imgPath}" class="mini-img" onerror="this.style.display='none'">
+                        <div class="mini-name">${c.name}</div>
+                    </div>
+                `;
+            });
             html += '</div>';
+
+            // 下方：詳細文字敘述清單
+            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px;">── 詳細牌意與現實解析 ──</div>';
+            html += '<div class="details-list-box">';
+            cards.forEach((c, idx) => {
+                html += createLenormandBoxHtml(c, titles[idx]);
+            });
+            html += '</div>';
+
             html += '<button class="reset-home-btn" onclick="resetToHome()">🔄 重新抽牌 (回到主頁面)</button>';
-            area.innerHTML = html;
+            html += '</div>';
+            
+            container.innerHTML = html;
         }
 
         function drawFreeSpread() {
             let count = customCount;
             let cards = getRandomLenormand(count);
-            let area = document.getElementById("spreadArea");
+            let container = document.getElementById("spreadArea");
+            container.classList.remove("is-wide");
+
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🎲 自 訂 雷 諾 曼（ ' + count + ' 張） 】</h2>';
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
             cards.forEach((c, idx) => {
@@ -634,7 +750,7 @@
             });
             html += '</div>';
             html += '<button class="reset-home-btn" onclick="resetToHome()">🔄 重新抽牌 (回到主頁面)</button>';
-            area.innerHTML = html;
+            container.innerHTML = html;
         }
     </script>
 </body>
