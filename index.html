@@ -8,7 +8,7 @@
     <link rel="icon" type="image/jpeg" href="tarot_drunk.jpg">
 
     <!-- 社群分享預覽標籤 -->
-    <meta property="og:title" content="醉酒雷諾曼 - 占卜系統">
+    <meta property="og:title" content="醉酒塔羅 - 雷諾曼占卜系統">
     <meta property="og:description" content="經典 36 張雷諾曼占卜系統，解析現實細節與生活指引。">
     <meta property="og:image" content="https://tarotdrunktw-png.github.io/tarot_app/tarot_drunk.jpg">
     <meta property="og:url" content="https://tarotdrunktw-png.github.io/tarot_app/">
@@ -449,10 +449,10 @@
                 }
                 let response = await fetch(endpoint);
                 let data = await response.json();
-                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒雷諾曼，您是第：${data.value} 位深夜酒客`;
+                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒塔羅，您是第：${data.value} 位深夜酒客`;
             } catch (e) {
                 console.error("計數器載入失敗", e);
-                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒雷諾曼`;
+                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒塔羅`;
             }
         }
 
@@ -568,7 +568,7 @@
             let area = document.getElementById("spreadArea");
             area.innerHTML = `
                 <div class="welcome-box">
-                    <div class="welcome-title">✨ 歡迎來到 醉酒雷諾曼占卜系統 ✨</div>
+                    <div class="welcome-title">✨ 歡迎來到 醉酒塔羅 - 雷諾曼占卜系統 ✨</div>
                     <div class="welcome-subtitle">✨ 請點擊上方選單與按鈕開始進行占卜 ✨</div>
                     <div class="welcome-instructions">
                         <div class="welcome-instructions-title">使用方式：</div>
