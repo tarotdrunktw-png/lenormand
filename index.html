@@ -196,7 +196,7 @@
             flex-direction: column; 
             align-items: center; 
             gap: 16px; 
-            position: relative; /* 確保浮水印定位基準 */
+            position: relative; /* 確保交錯浮水印基準定位 */
             overflow: hidden;
         }
         .spread-container.is-wide {
@@ -399,6 +399,7 @@
             max-width: 450px;
             margin: 10px auto 20px auto;
             justify-content: center;
+            z-index: 100; /* 確保按鈕在浮水印圖層之上 */
         }
 
         .action-btn {
@@ -429,26 +430,26 @@
             transform: translateY(-2px);
         }
 
-        /* 截圖斜向多條極淡浮水印背景層 */
+        /* 截圖斜向交錯重複多條浮水印層 */
         .screenshot-watermark-container {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 99;
             overflow: hidden;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
-            opacity: 0.10; /* 極淡化效果，不影響文字閱讀 */
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: 250px;
+            align-items: center;
+            justify-items: center;
+            opacity: 0.08; /* 極淡化設計，完全不影響文字閱讀 */
         }
         .watermark-item {
-            font-size: 18px;
+            font-size: 16px;
             color: #38bdf8;
             font-weight: bold;
-            transform: rotate(-30deg);
+            transform: rotate(-35deg);
             white-space: nowrap;
-            padding: 50px;
             user-select: none;
         }
 
@@ -734,15 +735,16 @@
             `;
         }
 
-        // 截圖功能：動態加入斜向多條極淡浮水印層後截圖，完成後自動移除
+        // 截圖功能：動態加入斜向交錯重複多條浮水印層後進行截圖
         function captureSpread() {
             let target = document.getElementById("spreadArea");
             let btnGroup = document.querySelector(".action-btn-group");
             if(btnGroup) btnGroup.style.display = "none";
 
+            // 建立交錯重複的多條斜向浮水印
             let watermarkContainer = document.createElement("div");
             watermarkContainer.className = "screenshot-watermark-container";
-            for(let i=0; i<10; i++) {
+            for(let i = 0; i < 12; i++) {
                 let item = document.createElement("div");
                 item.className = "watermark-item";
                 item.textContent = "🍸 醉酒塔羅 - 李特 @tarot.drunk";
