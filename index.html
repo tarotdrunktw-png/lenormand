@@ -196,7 +196,8 @@
             flex-direction: column; 
             align-items: center; 
             gap: 16px; 
-            position: relative; 
+            position: relative; /* 確保交錯浮水印基準定位 */
+            overflow: hidden;
         }
         .spread-container.is-wide {
             max-width: 1250px;
@@ -429,30 +430,31 @@
             transform: translateY(-2px);
         }
 
-        /* 全版滿版交錯斜向浮水印層設定 */
+        /* 全畫面交錯斜向極淡浮水印層設定 */
         .screenshot-watermark-container {
             position: absolute;
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; /* 高度將動態填滿整個長條容器 */
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 99;
             overflow: hidden;
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
-            opacity: 0.10; 
+            justify-content: space-between;
+            align-content: flex-start;
+            opacity: 0.08; /* 極淡化設計，完全不影響閱讀 */
         }
         .watermark-item {
             font-size: 16px;
             color: #38bdf8;
             font-weight: bold;
-            transform: rotate(-35deg);
+            transform: rotate(-30deg);
             white-space: nowrap;
-            padding: 120px; /* 拉大間距讓整張長圖均勻分佈 */
+            padding: 80px 40px; /* 控制浮水印之間的間距 */
             user-select: none;
+        }
+        /* 偶數行自動錯位交錯，呈現網格美感 */
+        .watermark-item:nth-child(even) {
+            transform: rotate(-30deg) translateY(40px);
         }
 
         /* 手機截圖彈窗預覽樣式 */
@@ -737,21 +739,20 @@
             `;
         }
 
-        // 截圖功能：動態長駐滿版交錯浮水印後截圖，完成後自動移除
+        // 截圖功能：動態長駐滿版交錯斜向浮水印層後截圖
         function captureSpread() {
             let target = document.getElementById("spreadArea");
             let btnGroup = document.querySelector(".action-btn-group");
             if(btnGroup) btnGroup.style.display = "none";
 
-            // 計算當前長條內容的完整高度，確保浮水印完美鋪滿整張截圖
             let totalHeight = target.scrollHeight;
 
             let watermarkContainer = document.createElement("div");
             watermarkContainer.className = "screenshot-watermark-container";
             watermarkContainer.style.height = totalHeight + "px";
 
-            // 依照高度動態產生足夠數量的交錯浮水印
-            let count = Math.max(16, Math.floor(totalHeight / 150) * 2);
+            // 計算整張長圖所需的交錯浮水印密度
+            let count = Math.max(24, Math.floor(totalHeight / 120));
             for(let i = 0; i < count; i++) {
                 let item = document.createElement("div");
                 item.className = "watermark-item";
