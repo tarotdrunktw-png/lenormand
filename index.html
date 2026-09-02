@@ -196,6 +196,8 @@
             flex-direction: column; 
             align-items: center; 
             gap: 16px; 
+            position: relative; /* 確保浮水印定位基準 */
+            overflow: hidden;
         }
         .spread-container.is-wide {
             max-width: 1250px;
@@ -242,7 +244,7 @@
             text-align: center;
         }
 
-        /* 雷諾曼詳細卡片樣式：寬度 395px */
+        /* 雷諾曼卡片樣式盒子 */
         .leno-card-box {
             width: 100%;
             max-width: 395px;
@@ -425,6 +427,29 @@
         }
         .action-btn:hover {
             transform: translateY(-2px);
+        }
+
+        /* 截圖斜向多條極淡浮水印背景層 */
+        .screenshot-watermark-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            opacity: 0.10; /* 極淡化效果，不影響文字閱讀 */
+        }
+        .watermark-item {
+            font-size: 18px;
+            color: #38bdf8;
+            font-weight: bold;
+            transform: rotate(-30deg);
+            white-space: nowrap;
+            padding: 50px;
+            user-select: none;
         }
 
         /* 手機截圖彈窗預覽樣式 */
@@ -709,11 +734,21 @@
             `;
         }
 
-        // 截圖並下載或彈出預覽
+        // 截圖功能：動態加入斜向多條極淡浮水印層後截圖，完成後自動移除
         function captureSpread() {
             let target = document.getElementById("spreadArea");
             let btnGroup = document.querySelector(".action-btn-group");
             if(btnGroup) btnGroup.style.display = "none";
+
+            let watermarkContainer = document.createElement("div");
+            watermarkContainer.className = "screenshot-watermark-container";
+            for(let i=0; i<10; i++) {
+                let item = document.createElement("div");
+                item.className = "watermark-item";
+                item.textContent = "🍸 醉酒塔羅 - 李特 @tarot.drunk";
+                watermarkContainer.appendChild(item);
+            }
+            target.appendChild(watermarkContainer);
 
             html2canvas(target, {
                 backgroundColor: "#0d0f14",
@@ -721,7 +756,9 @@
                 useCORS: true,
                 logging: false
             }).then(canvas => {
+                target.removeChild(watermarkContainer);
                 if(btnGroup) btnGroup.style.display = "flex";
+
                 let dataUrl = canvas.toDataURL("image/png");
                 let isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
                 
@@ -735,6 +772,7 @@
                     link.click();
                 }
             }).catch(err => {
+                if(watermarkContainer.parentNode) target.removeChild(watermarkContainer);
                 if(btnGroup) btnGroup.style.display = "flex";
                 console.error("截圖失敗", err);
                 alert("截圖產生失敗，請稍後再試");
@@ -763,7 +801,7 @@
             let card = getRandomLenormand(1)[0];
             let area = document.getElementById("spreadArea");
             area.classList.remove("is-wide");
-            let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🃏 雷 諾 曼 日 記 (單張) 】</h2>';
+            let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🃏 雷 諾 曼 每 日 日 記 】</h2>';
             html += '<div style="width:100%; max-width:450px;">';
             html += createLenormandBoxHtml(card, "【今日能量指引】 核心事件與提醒");
             html += '</div>';
@@ -809,7 +847,7 @@
                 "7.根源", "8.過程", "9.結果"
             ];
 
-            let html = '<h2 style="color:#f8fafc; margin-bottom:4px; text-align:center; width:100%;">【 🔲 九 宮 格 】</h2>';
+            let html = '<h2 style="color:#f8fafc; margin-bottom:4px; text-align:center; width:100%;">【 🔲 九 宮 格 心 靈 透 視 (9張) 】</h2>';
             html += '<div style="display:flex; flex-direction:column; gap:16px; width:100%; align-items:center;">';
 
             /* 手機版專屬牌面總覽：九宮格 3x3 幾何預覽排版（帶有對應欄位說明） */
