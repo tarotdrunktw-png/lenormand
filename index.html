@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>醉酒塔羅 - 雷諾曼占卜系統</title>
+    <!-- 網頁分頁圖標 (Favicon) 設定 -->
     <link rel="icon" type="image/jpeg" href="tarot_drunk.jpg">
 
+    <!-- 社群分享預覽標籤 -->
     <meta property="og:title" content="醉酒塔羅 - 雷諾曼占卜系統">
     <meta property="og:description" content="經典 36 張雷諾曼占卜系統，解析現實細節與生活指引。">
     <meta property="og:image" content="https://tarotdrunktw-png.github.io/tarot_app/tarot_drunk.jpg">
     <meta property="og:url" content="https://tarotdrunktw-png.github.io/tarot_app/">
     <meta property="og:type" content="website">
 
+    <!-- 引入 html2canvas 函式庫供截圖使用 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
@@ -193,7 +196,7 @@
             flex-direction: column; 
             align-items: center; 
             gap: 16px; 
-            position: relative; /* 確保浮水印定位基準 */
+            position: relative; 
             overflow: hidden;
         }
         .spread-container.is-wide {
@@ -427,21 +430,32 @@
             transform: translateY(-2px);
         }
 
-        /* 重現您原本那種「精緻圓角外框浮水印標籤」風格的動態群組 */
-        .screenshot-watermark-item {
+        /* 全版覆蓋的斜向交錯重複多條浮水印層 */
+        .screenshot-watermark-container {
             position: absolute;
-            background: rgba(13, 15, 20, 0.82);
-            border: 1px solid rgba(56, 189, 248, 0.35);
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            color: #38bdf8;
-            font-weight: bold;
-            letter-spacing: 0.5px;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 99;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            opacity: 0.10; /* 極淡化設計，完全不影響文字閱讀 */
+        }
+        .watermark-row {
+            display: flex;
+            width: 150%;
+            justify-content: space-around;
             white-space: nowrap;
+        }
+        .watermark-item {
+            font-size: 16px;
+            color: #38bdf8;
+            font-weight: bold;
+            transform: rotate(-30deg);
+            padding: 40px 60px;
+            user-select: none;
         }
 
         /* 手機截圖彈窗預覽樣式 */
@@ -558,6 +572,7 @@
         </div>
     </div>
 
+    <!-- 手機長按儲存截圖彈窗 (提示固定在圖片上方) -->
     <div id="screenshotModal" class="screenshot-modal" onclick="this.style.display='none'">
         <div class="screenshot-tip">👆 請長按下方圖片選擇「加入照片」或「儲存影像」</div>
         <img id="screenshotResultImg" alt="占卜結果截圖" onclick="event.stopPropagation()">
@@ -725,38 +740,32 @@
             `;
         }
 
-        // 截圖功能：動態生成多個您原本喜愛的「精緻圓角外框浮水印標籤」並均勻交錯佈滿整張長圖
+        // 截圖功能：動態加入全版交錯重複的斜向極淡浮水印層後截圖
         function captureSpread() {
             let target = document.getElementById("spreadArea");
             let btnGroup = document.querySelector(".action-btn-group");
             if(btnGroup) btnGroup.style.display = "none";
 
-            let totalHeight = target.scrollHeight;
+            // 計算高度以自動動態生成足夠覆蓋全版的浮水印列
+            let contentHeight = target.scrollHeight;
+            let rowCount = Math.max(6, Math.ceil(contentHeight / 180));
 
-            // 依據高度動態產生多個交錯標籤
-            let watermarkElements = [];
-            let stepY = 320; // 垂直間距
-            let rows = Math.ceil(totalHeight / stepY);
-
-            for(let r = 0; r < rows; r++) {
-                // 左側標籤
-                let wmLeft = document.createElement("div");
-                wmLeft.className = "screenshot-watermark-item";
-                wmLeft.innerHTML = '🍸 醉酒塔羅 - 李特 <span style="opacity:0.7;">@tarot.drunk</span>';
-                wmLeft.style.top = (r * stepY + 80) + "px";
-                wmLeft.style.left = "8%";
-                target.appendChild(wmLeft);
-                watermarkElements.push(wmLeft);
-
-                // 右側標籤（錯位交錯排列）
-                let wmRight = document.createElement("div");
-                wmRight.className = "screenshot-watermark-item";
-                wmRight.innerHTML = '🍸 醉酒塔羅 - 李特 <span style="opacity:0.7;">@tarot.drunk</span>';
-                wmRight.style.top = (r * stepY + 240) + "px";
-                wmRight.style.right = "8%";
-                target.appendChild(wmRight);
-                watermarkElements.push(wmRight);
+            let watermarkContainer = document.createElement("div");
+            watermarkContainer.className = "screenshot-watermark-container";
+            
+            for(let r = 0; r < rowCount; r++) {
+                let row = document.createElement("div");
+                row.className = "watermark-row";
+                // 每行放入 3 個交錯浮水印
+                for(let i = 0; i < 3; i++) {
+                    let item = document.createElement("div");
+                    item.className = "watermark-item";
+                    item.textContent = "🍸 醉酒塔羅 - 李特 @tarot.drunk";
+                    row.appendChild(item);
+                }
+                watermarkContainer.appendChild(row);
             }
+            target.appendChild(watermarkContainer);
 
             html2canvas(target, {
                 backgroundColor: "#0d0f14",
@@ -764,8 +773,7 @@
                 useCORS: true,
                 logging: false
             }).then(canvas => {
-                // 移除暫時的浮水印元素
-                watermarkElements.forEach(el => target.removeChild(el));
+                target.removeChild(watermarkContainer);
                 if(btnGroup) btnGroup.style.display = "flex";
 
                 let dataUrl = canvas.toDataURL("image/png");
@@ -781,9 +789,7 @@
                     link.click();
                 }
             }).catch(err => {
-                watermarkElements.forEach(el => {
-                    if(el.parentNode) target.removeChild(el);
-                });
+                if(watermarkContainer.parentNode) target.removeChild(watermarkContainer);
                 if(btnGroup) btnGroup.style.display = "flex";
                 console.error("截圖失敗", err);
                 alert("截圖產生失敗，請稍後再試");
@@ -792,7 +798,6 @@
 
         function resetToHome() {
             let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
             area.innerHTML = `
                 <div class="welcome-box">
                     <div class="welcome-title">✨ 歡迎來到 醉酒塔羅 - 雷諾曼占卜系統 ✨</div>
@@ -811,7 +816,6 @@
         function drawDailyDiary() {
             let card = getRandomLenormand(1)[0];
             let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🃏 雷 諾 曼 每 日 日 記 】</h2>';
             html += '<div style="width:100%; max-width:450px;">';
             html += createLenormandBoxHtml(card, "【今日能量指引】 核心事件與提醒");
@@ -826,7 +830,6 @@
         function drawLine3() {
             let cards = getRandomLenormand(3);
             let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
             let titles = ["【第一張·過去起因】", "【第二張·當前現狀】", "【第三張·未來發展】"];
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 📏 三 張 直 線 牌 陣 】</h2>';
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
@@ -844,7 +847,6 @@
         function drawBox9() {
             let cards = getRandomLenormand(9);
             let area = document.getElementById("spreadArea");
-            area.classList.add("is-wide");
 
             let titles = [
                 "【1.左上·過去潛在影響】", "【2.中上·發展環境】", "【3.右上·未來遠景】",
@@ -892,7 +894,6 @@
             let count = customCount;
             let cards = getRandomLenormand(count);
             let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🎲 自 訂 雷 諾 曼（ ' + count + ' 張） 】</h2>';
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
             cards.forEach((c, idx) => {
