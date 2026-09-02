@@ -188,6 +188,7 @@
             -webkit-overflow-scrolling: touch;
             width: 100%; 
             background: transparent !important;
+            position: relative; /* 擴大浮水印容器範圍至整個工作區 */
         }
         .spread-container { 
             width: 100%; 
@@ -196,8 +197,6 @@
             flex-direction: column; 
             align-items: center; 
             gap: 16px; 
-            position: relative; /* 確保交錯浮水印基準定位 */
-            overflow: hidden;
         }
         .spread-container.is-wide {
             max-width: 1250px;
@@ -399,7 +398,7 @@
             max-width: 450px;
             margin: 10px auto 20px auto;
             justify-content: center;
-            z-index: 100; /* 確保按鈕在浮水印圖層之上 */
+            z-index: 100;
         }
 
         .action-btn {
@@ -430,26 +429,26 @@
             transform: translateY(-2px);
         }
 
-        /* 截圖斜向交錯重複佈滿全版的浮水印層 */
+        /* 密集交錯斜向浮水印網格層 */
         .screenshot-watermark-container {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 99;
             overflow: hidden;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
-            opacity: 0.08; /* 極淡化設計，完全不影響文字閱讀 */
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 180px; /* 縮小行高以增加密集度 */
+            align-items: center;
+            justify-items: center;
+            opacity: 0.10; /* 極淡化設計，不干擾內文辨識 */
         }
         .watermark-item {
-            font-size: 16px;
+            font-size: 15px;
             color: #38bdf8;
             font-weight: bold;
-            transform: rotate(-35deg);
+            transform: rotate(-30deg);
             white-space: nowrap;
-            padding: 120px; /* 增加間距讓全版交錯分佈 */
             user-select: none;
         }
 
@@ -551,7 +550,7 @@
             </div>
         </div>
 
-        <div class="workspace">
+        <div id="workspaceContainer" class="workspace">
             <div id="spreadArea" class="spread-container">
                 <div class="welcome-box">
                     <div class="welcome-title">✨ 歡迎來到 醉酒塔羅 - 雷諾曼占卜系統 ✨</div>
@@ -735,20 +734,20 @@
             `;
         }
 
-        // 動態產生涵蓋整張結果的交錯極淡浮水印網格
+        // 截圖功能：以整個 workspace 容器為目標，並加入全版交錯重複的高密度淡化浮水印
         function captureSpread() {
-            let target = document.getElementById("spreadArea");
+            let target = document.getElementById("workspaceContainer");
             let btnGroup = document.querySelector(".action-btn-group");
             if(btnGroup) btnGroup.style.display = "none";
 
-            // 計算高度以自動動態覆蓋整張截圖版面
+            // 計算高度來動態鋪滿整個畫面長條圖的交錯浮水印
             let totalHeight = target.scrollHeight;
             let watermarkContainer = document.createElement("div");
             watermarkContainer.className = "screenshot-watermark-container";
             watermarkContainer.style.height = totalHeight + "px";
 
-            // 依據高度動態產生足夠數量的交錯浮水印文字
-            let count = Math.max(15, Math.floor(totalHeight / 150) * 4);
+            // 計算足夠覆蓋長條圖的浮水印數量
+            let count = Math.ceil(totalHeight / 120) * 2;
             for(let i = 0; i < count; i++) {
                 let item = document.createElement("div");
                 item.className = "watermark-item";
@@ -761,7 +760,8 @@
                 backgroundColor: "#0d0f14",
                 scale: window.innerWidth < 768 ? 2.5 : 2, 
                 useCORS: true,
-                logging: false
+                logging: false,
+                windowHeight: totalHeight
             }).then(canvas => {
                 target.removeChild(watermarkContainer);
                 if(btnGroup) btnGroup.style.display = "flex";
@@ -788,7 +788,6 @@
 
         function resetToHome() {
             let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
             area.innerHTML = `
                 <div class="welcome-box">
                     <div class="welcome-title">✨ 歡迎來到 醉酒塔羅 - 雷諾曼占卜系統 ✨</div>
@@ -807,7 +806,6 @@
         function drawDailyDiary() {
             let card = getRandomLenormand(1)[0];
             let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🃏 雷 諾 曼 每 日 日 記 】</h2>';
             html += '<div style="width:100%; max-width:450px;">';
             html += createLenormandBoxHtml(card, "【今日能量指引】 核心事件與提醒");
@@ -822,7 +820,6 @@
         function drawLine3() {
             let cards = getRandomLenormand(3);
             let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
             let titles = ["【第一張·過去起因】", "【第二張·當前現狀】", "【第三張·未來發展】"];
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 📏 三 張 直 線 牌 陣 】</h2>';
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
@@ -840,7 +837,6 @@
         function drawBox9() {
             let cards = getRandomLenormand(9);
             let area = document.getElementById("spreadArea");
-            area.classList.add("is-wide");
 
             let titles = [
                 "【1.左上·過去潛在影響】", "【2.中上·發展環境】", "【3.右上·未來遠景】",
@@ -888,7 +884,6 @@
             let count = customCount;
             let cards = getRandomLenormand(count);
             let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🎲 自 訂 雷 諾 曼（ ' + count + ' 張） 】</h2>';
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
             cards.forEach((c, idx) => {
