@@ -26,7 +26,7 @@
             --tarot-bg: rgba(26, 30, 43, 0.9);
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
-            --accent: #0ea5e9; /* 改為雷諾曼常用的神祕藍色系 */
+            --accent: #0ea5e9; 
             --accent-hover: #38bdf8;
             --pos-green: #2ecc71;
             --neu-yellow: #f1c40f;
@@ -36,134 +36,63 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Microsoft JhengHei", "Heiti TC", sans-serif; }
         
         html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #0d0f14;
+            width: 100%; height: 100%; margin: 0; padding: 0; background-color: #0d0f14;
             background-image: url('daria-yakovleva-drink-6988494.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: var(--text-main);
-            overflow: hidden;
-            position: relative;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            background-attachment: fixed; color: var(--text-main); overflow: hidden; position: relative;
             touch-action: manipulation;
         }
 
         body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(13, 15, 20, 0.4);
-            -webkit-backdrop-filter: blur(4px);
-            backdrop-filter: blur(4px);
-            z-index: 0;
+            content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(13, 15, 20, 0.4); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); z-index: 0;
         }
 
-        .app-layout {
-            position: relative;
-            z-index: 1;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            background: transparent !important;
-        }
+        .app-layout { position: relative; z-index: 1; display: flex; flex-direction: column; width: 100vw; height: 100vh; height: 100dvh; background: transparent !important; }
 
         .control-panel {
-            background-color: var(--panel-bg);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            padding: 8px 6px;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            gap: 6px;
-            text-align: center;
-            width: 100%;
-            z-index: 10;
+            background-color: var(--panel-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+            padding: 8px 6px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 6px; text-align: center; width: 100%; z-index: 10;
         }
         .title { font-size: 15px; font-weight: bold; color: #e4e6eb; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
         
-        .control-row { 
-            display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; 
-            -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; gap: 4px; -ms-flex-wrap: nowrap; flex-wrap: nowrap; 
-            width: 100%; max-width: 100%;
-        }
+        .control-row { display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: nowrap; width: 100%; max-width: 100%; overflow-x: auto; }
         
         button, select {
-            background-color: var(--accent); color: #fff; border: none; padding: 5px 6px; font-size: 12px; font-weight: bold;
-            border-radius: 4px; cursor: pointer; -webkit-transition: background 0.2s; transition: background 0.2s; white-space: nowrap;
+            background-color: var(--accent); color: #000; border: none; padding: 5px 6px; font-size: 12px; font-weight: bold;
+            border-radius: 4px; cursor: pointer; transition: background 0.2s; white-space: nowrap;
         }
-        button:hover { background-color: var(--accent-hover); color: #000; }
+        button:hover { background-color: var(--accent-hover); }
         
-        select { 
-            background-color: #0d0f14; border: 1px solid #475569; color: #fff; padding: 4px 6px; font-size: 11px; 
-            height: 26px; border-radius: 3px; -ms-flex-negative: 1; flex-shrink: 1; 
-        }
+        select { background-color: #0d0f14; border: 1px solid #475569; color: #fff; padding: 4px 6px; font-size: 14px; height: 26px; border-radius: 3px; flex-shrink: 1; }
 
-        /* 隱藏數字輸入框原生箭頭，防 iOS 縮放 */
-        input[type=number].num-input::-webkit-inner-spin-button, 
-        input[type=number].num-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type=number].num-input {
-            background-color: #0d0f14; border: 1px solid #475569; color: #fff; padding: 4px; font-size: 16px; 
-            height: 26px; border-radius: 3px; text-align: center; margin: 0 2px;
-        }
+        /* 隱藏數字輸入框的原生上下箭頭 */
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         
         .config-box { 
             background: rgba(30, 34, 48, 0.8); padding: 2px 6px; border-radius: 4px; border: 1px solid #33394d; 
-            display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; 
-            -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; gap: 4px; font-size: 11px; color: #38bdf8; 
-            white-space: nowrap; -ms-flex-negative: 1; flex-shrink: 1; min-height: 28px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: #38bdf8; 
+            white-space: nowrap; flex-shrink: 1; min-height: 28px; cursor: pointer;
         }
 
-        .workspace { 
-            -webkit-box-flex: 1; -ms-flex: 1; flex: 1; padding: 20px 16px 80px 16px; display: -webkit-box; display: -ms-flexbox; display: flex; 
-            -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: start; -ms-flex-align: start; align-items: flex-start; 
-            overflow-y: auto; -webkit-overflow-scrolling: touch; width: 100%; background: transparent !important; position: relative;
-        }
-        .spread-container { 
-            width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; gap: 16px; position: relative;
-            overflow: hidden; padding-bottom: 20px;
-        }
+        .workspace { flex: 1; padding: 20px 16px 80px 16px; display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; width: 100%; background: transparent !important; }
+        .spread-container { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; gap: 16px; position: relative; overflow: hidden; height: auto; padding-bottom: 20px; }
         .spread-container.is-wide { max-width: 1250px; }
 
-        .welcome-box {
-            text-align: center; padding: 20px 20px; width: 100%; max-width: 600px; background: rgba(13, 15, 20, 0.45);
-            border-radius: 8px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+        .welcome-box { text-align: center; padding: 20px 20px; width: 100%; max-width: 600px; background: rgba(13, 15, 20, 0.45); border-radius: 8px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .welcome-title { font-size: 15.6px; font-weight: bold; line-height: 1.8; margin-bottom: 15px; color: #f8fafc; }
         .welcome-subtitle { font-size: 15.6px; font-weight: bold; line-height: 1.8; margin-bottom: 24px; color: #f8fafc; }
         .welcome-instructions { font-size: 14.8px; line-height: 2.2; color: #cbd5e1; margin-top: 12px; text-align: left; display: inline-block; }
         .welcome-instructions-title { font-weight: bold; margin-bottom: 11.5px; font-size: 12px; color: #38bdf8; text-align: center; }
 
-        /* ====== 認證與帳號系統樣式 ====== */
+        /* ====== 認證與歷史紀錄 ====== */
         .auth-card { background: rgba(21, 24, 33, 0.95); border: 1px solid #333a4f; border-radius: 10px; padding: 24px; width: 100%; max-width: 420px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 14px; }
         .auth-header { font-size: 16px; font-weight: bold; color: #38bdf8; text-align: center; margin-bottom: 4px; }
         .auth-field { display: flex; flex-direction: column; gap: 5px; text-align: left; }
         .auth-field label { font-size: 12px; color: #cbd5e1; font-weight: bold; }
         .auth-field input { background: #0d0f14; border: 1px solid #475569; border-radius: 6px; padding: 10px; color: #fff; font-size: 16px; }
         .auth-field input:focus { border-color: #38bdf8; outline: none; }
-        .auth-btn-group { display: flex; gap: 10px; margin-top: 10px; }
         .auth-switch-text { text-align: center; font-size: 12px; color: #94a3b8; margin-top: 8px; display: flex; justify-content: space-between; }
         .auth-switch-text span { color: #38bdf8; cursor: pointer; font-weight: bold; text-decoration: underline; }
 
@@ -174,11 +103,8 @@
         .history-item { background: #232736; border: 1px solid #2f364b; padding: 10px; border-radius: 6px; font-size: 12px; color: #cbd5e1; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
         .history-item:hover { background: #333b52; }
 
-        /* 雷諾曼卡片樣式盒子 */
-        .leno-card-box {
-            width: 100%; max-width: 395px; min-height: 180px; background-color: var(--card-bg); border: 1px solid #2d3343;
-            border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5); margin: 0 auto;
-        }
+        /* 雷諾曼主牌樣式 */
+        .leno-card-box { width: 100%; max-width: 395px; min-height: 180px; background-color: var(--card-bg); border: 1px solid #2d3343; border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5); margin: 0 auto; }
         .banner { background-color: #1e293b; color: #38bdf8; font-size: 13px; font-weight: bold; padding: 6px 10px; text-align: center; border-bottom: 1px solid #334155; }
         .leno-content { background-color: var(--inner-bg); padding: 8px; flex: 1; display: flex; gap: 10px; align-items: center; }
         .leno-img { width: 70px; height: 105px; object-fit: cover; border: 1px solid #444; background: #000; border-radius: 4px; flex-shrink: 0; }
@@ -189,10 +115,9 @@
         .badge-pos { background-color: var(--pos-green); }
         .badge-neu { background-color: var(--neu-yellow); }
         .badge-neg { background-color: var(--neg-red); color: #fff; }
-
         .leno-desc-box { background: #242938; padding: 6px 8px; border-radius: 4px; color: #cbd5e1; margin-top: 2px; line-height: 1.4; }
 
-        /* 手機版牌陣縮圖專屬排版樣式 */
+        /* 手機縮圖預覽 */
         .mobile-preview-section { display: none; width: 100%; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 4px; }
         @media (max-width: 768px) { .mobile-preview-section { display: flex; } }
 
@@ -203,7 +128,6 @@
 
         /* 九宮格縮圖幾何 */
         .box9-visual-mobile { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 310px; margin: 5px auto; justify-items: center; align-items: center; }
-
         /* 電腦版九宮格真實棋盤網格佈局 */
         .box9-grid-desktop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 1250px; margin: 0 auto; }
         @media (max-width: 1000px) { .box9-grid-desktop { grid-template-columns: 1fr; } }
@@ -217,12 +141,25 @@
         .screenshot-watermark-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99; overflow: hidden; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 150px; align-items: center; justify-items: center; opacity: 0.10; }
         .watermark-item { font-size: 15px; color: #38bdf8; font-weight: bold; transform: rotate(-30deg); white-space: nowrap; user-select: none; }
 
-        /* 彈窗系統防拉伸 */
+        /* ====== 彈窗系統 ====== */
         .screenshot-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; flex-direction: column; gap: 10px; }
         .screenshot-modal img, .preview-modal img { max-width: 100%; max-height: 65vh; border-radius: 6px; border: 2px solid #38bdf8; box-shadow: 0 4px 20px rgba(0,0,0,0.8); object-fit: contain; }
         .screenshot-modal .action-btn { flex: none; width: auto; min-width: 120px; padding: 10px 24px; margin-top: 10px; }
         .preview-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; flex-direction: column; gap: 10px; }
         .screenshot-tip { font-size: 13px; color: #38bdf8; font-weight: bold; text-align: center; background: rgba(13, 15, 20, 0.8); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
+        .modal-content { background: #1a1c24; width: 100%; max-width: 500px; max-height: 85vh; border-radius: 8px; border: 1px solid #333a4f; display: flex; flex-direction: column; overflow: hidden; padding: 16px; }
+        .modal-header { font-size: 16px; font-weight: bold; color: #38bdf8; margin-bottom: 12px; text-align: center; }
+        .modal-body { overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
+        
+        /* 專屬：直覺輸入彈窗欄位樣式 */
+        .int-input-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; }
+        .int-num-input {
+            width: 80px; height: 45px; text-align: center; font-size: 18px; font-weight: bold;
+            background: #0d0f14; border: 2px solid #475569; color: #38bdf8; border-radius: 6px;
+        }
+        .int-num-input:focus { border-color: #0ea5e9; outline: none; }
 
         .brand-footer { position: fixed; bottom: 35px; right: 16px; background: rgba(21, 24, 33, 0.9); border: 1px solid #2f364b; padding: 8px 14px; border-radius: 8px; font-size: 13px; z-index: 999; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
         .brand-name { font-weight: bold; color: #38bdf8; letter-spacing: 0.5px; }
@@ -257,19 +194,16 @@
                     <span id="freeCountDisplay" style="color: #fff; font-weight: bold;">3</span>
                 </div>
 
-                <!-- 🔢 新增：直覺數字選單與輸入框 -->
+                <!-- 直覺數字選擇牌數 -->
                 <div class="config-box" id="numCountBox" style="display: none;">
                     <span>牌數:</span>
-                    <select id="intuitiveCount" onchange="updateIntuitiveInputs()">
+                    <select id="intuitiveCount">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3" selected>3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
                     </select>
-                </div>
-                <div class="config-box" id="numberInputBox" style="display: none; background: transparent; border: none; padding: 0;">
-                    <!-- 動態產生的數字輸入框 -->
                 </div>
 
                 <button onclick="executeDraw()">✨ 開始占卜</button>
@@ -293,7 +227,22 @@
         </div>
     </div>
 
-    <!-- 彈窗系統 -->
+    <!-- 直覺數字輸入彈窗 -->
+    <div id="intuitiveModal" class="modal-overlay" onclick="closeIntuitiveModal(event)">
+        <div class="modal-content" style="max-width: 350px; text-align: center;" onclick="event.stopPropagation()">
+            <div class="modal-header">🔢 請輸入直覺數字</div>
+            <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">請為每一格輸入 1~36 的不重複數字</div>
+            <div id="intuitiveModalBody" style="display: flex; flex-direction: column; gap: 10px; align-items: center; padding: 10px 0;">
+                <!-- JS 動態生成輸入框 -->
+            </div>
+            <div class="action-btn-group" style="margin-top: 20px;">
+                <button class="action-btn" onclick="confirmIntuitiveDraw()">確定抽牌</button>
+                <button class="action-btn secondary" onclick="closeIntuitiveModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 其他彈窗系統 -->
     <div id="screenshotModal" class="screenshot-modal" onclick="this.style.display='none'">
         <div class="screenshot-tip">👆 請長按下方圖片選擇「加入照片」或「儲存影像」</div>
         <img id="screenshotResultImg" alt="占卜結果截圖" onclick="event.stopPropagation()">
@@ -357,16 +306,12 @@
                 let response = await fetch(endpoint);
                 let data = await response.json();
                 document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒塔羅，您是第：${data.value} 位深夜酒客`;
-            } catch (e) {
-                console.error("計數器載入失敗", e);
-                document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒塔羅`;
-            }
+            } catch (e) { document.getElementById('visitorCount').textContent = `🍸 歡迎來到醉酒塔羅`; }
         }
 
         window.onload = function() {
             initCounter();
             updateUserDisplay();
-            updateIntuitiveInputs(); // 初始化數字輸入框
         };
 
         // ====== 帳號與通訊邏輯 ====== //
@@ -674,36 +619,45 @@
 
         function closeHistoryModal(e) { document.getElementById("historyModal").style.display = "none"; }
 
-        // ====== UI 控制與抽牌邏輯 ====== //
-        function updateIntuitiveInputs() {
-            let count = parseInt(document.getElementById("intuitiveCount").value) || 3;
-            let box = document.getElementById("numberInputBox");
-            box.innerHTML = "";
-            for(let i=1; i<=count; i++) {
-                let inp = document.createElement("input");
-                inp.type = "number";
-                inp.className = "num-input";
-                inp.min = 1;
-                inp.max = 36;
-                inp.placeholder = "#" + i;
-                box.appendChild(inp);
-            }
-        }
-
+        // ====== 牌陣與畫面控制 ====== //
         function toggleSpreadConfig() {
             let spreadVal = document.getElementById("spreadSelect").value;
-            let isFree = (spreadVal === "free");
-            let isNumber = (spreadVal === "number");
+            document.getElementById("freeConfigBox").style.display = (spreadVal === "free") ? "flex" : "none";
+            document.getElementById("numCountBox").style.display = (spreadVal === "number") ? "flex" : "none";
+        }
 
-            document.getElementById("freeConfigBox").style.display = isFree ? "flex" : "none";
-            document.getElementById("numCountBox").style.display = isNumber ? "flex" : "none";
-            document.getElementById("numberInputBox").style.display = isNumber ? "flex" : "none";
+        function resetToHome() {
+            let area = document.getElementById("spreadArea");
+            area.classList.remove("is-wide");
+            area.innerHTML = `
+                <div class="welcome-box">
+                    <div class="welcome-title">✨ 歡迎來到 醉酒塔羅 - 雷諾曼占卜系統 ✨</div>
+                    <div class="welcome-subtitle">✨ 請點擊上方選單與按鈕開始進行占卜 ✨</div>
+                    <div class="welcome-instructions">
+                        <div class="welcome-instructions-title">使用方式：</div>
+                        <div>1. 深呼吸三次，讓心靈沉澱</div>
+                        <div>2. 閉上雙眼，在心中默念您的問題</div>
+                        <div>3. 於上方選單挑選牌陣，按下「開始占卜」</div>
+                        <div style="color: #38bdf8; margin-top: 4px;">提醒：若要使用雲端紀錄功能，請點擊右上角登入。</div>
+                    </div>
+                </div>
+            `;
+            document.querySelector(".workspace").scrollTop = 0;
+        }
 
-            if (isNumber && document.getElementById("numberInputBox").children.length === 0) {
-                updateIntuitiveInputs();
+        function executeDraw() {
+            let spreadVal = document.getElementById("spreadSelect").value;
+            if (spreadVal === "number") {
+                showIntuitiveModal();
+            } else {
+                if (spreadVal === "diary") drawDailyDiary();
+                else if (spreadVal === "line3") drawLine3();
+                else if (spreadVal === "box9") drawBox9();
+                else if (spreadVal === "free") drawFreeSpread();
             }
         }
 
+        // 完整 36 張經典雷諾曼牌庫
         const LENORMAND_DECK = [
             {no: 1, name: "騎士", en: "Rider", file: "rider.avif", suit: "9♥", polarity: "正面", theme: "消息與行動", keywords: ["快速到來的消息", "新訪客", "行動力"]},
             {no: 2, name: "幸運草", en: "Clover", file: "clover.avif", suit: "6♦", polarity: "正面", theme: "短暫的幸運", keywords: ["小確幸", "意外轉機", "樂觀"]},
@@ -824,7 +778,9 @@
                 if(btnGroup) btnGroup.style.display = "flex";
 
                 let dataUrl = canvas.toDataURL("image/png");
-                if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+                let isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+                
+                if (isMobile) {
                     document.getElementById("screenshotResultImg").src = dataUrl;
                     document.getElementById("screenshotModal").style.display = "flex";
                 } else {
@@ -838,34 +794,68 @@
             });
         }
 
-        function resetToHome() {
+        // ⚠️ 全新：直覺輸入彈窗控制
+        function showIntuitiveModal() {
+            let count = parseInt(document.getElementById("intuitiveCount").value) || 3;
+            let body = document.getElementById("intuitiveModalBody");
+            body.innerHTML = "";
+            for (let i = 1; i <= count; i++) {
+                let row = document.createElement("div");
+                row.className = "int-input-row";
+                row.innerHTML = `<span style="color:#94a3b8; font-weight:bold; font-size:14px;">第 ${i} 張：</span>
+                                 <input type="number" class="int-num-input num-input" min="1" max="36" placeholder="#">`;
+                body.appendChild(row);
+            }
+            document.getElementById("intuitiveModal").style.display = "flex";
+        }
+
+        function closeIntuitiveModal() {
+            document.getElementById("intuitiveModal").style.display = "none";
+        }
+
+        function confirmIntuitiveDraw() {
+            let inputs = document.querySelectorAll("#intuitiveModalBody .num-input");
+            let usedNums = [];
+            let validCards = [];
+
+            for (let i = 0; i < inputs.length; i++) {
+                let val = inputs[i].value.trim();
+                if (!val) { alert(`請填寫第 ${i + 1} 張的數字！`); return; }
+                let n = parseInt(val);
+                if (isNaN(n) || n < 1 || n > 36) { alert(`第 ${i + 1} 張「${val}」無效！雷諾曼卡只有 1 到 36 號。`); return; }
+                if (usedNums.includes(n)) { alert(`數字 ${n} 重複了！一副牌每張數字只有一張。`); return; }
+                
+                usedNums.push(n);
+                let card = LENORMAND_DECK.find(c => c.no === n);
+                validCards.push(card);
+            }
+
+            if(validCards.length === 0) return;
+            closeIntuitiveModal();
+
             let area = document.getElementById("spreadArea");
             area.classList.remove("is-wide");
-            area.innerHTML = `
-                <div class="welcome-box">
-                    <div class="welcome-title">✨ 歡迎來到 醉酒塔羅 - 雷諾曼占卜系統 ✨</div>
-                    <div class="welcome-subtitle">✨ 請點擊上方選單與按鈕開始進行占卜 ✨</div>
-                    <div class="welcome-instructions">
-                        <div class="welcome-instructions-title">使用方式：</div>
-                        <div>1. 深呼吸三次，讓心靈沉澱</div>
-                        <div>2. 閉上雙眼，在心中默念您的問題</div>
-                        <div>3. 於上方選單挑選牌陣，按下「開始占卜」</div>
-                        <div style="color: #38bdf8; margin-top: 4px;">提醒：若要使用雲端紀錄功能，請點擊右上角登入。</div>
-                    </div>
-                </div>
-            `;
-            document.querySelector(".workspace").scrollTop = 0;
+
+            let html = `<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🔢 直 覺 數 字 (共 ${validCards.length} 張) 】</h2>`;
+            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
+            
+            html += '<div class="mobile-preview-section"><div style="font-size:12px; color:#38bdf8; font-weight:bold;">── 牌面總覽 ──</div>';
+            html += '<div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; max-width:320px;">';
+            validCards.forEach((c, idx) => { html += createMiniCardHtml(c, `數字 ${usedNums[idx]}`); });
+            html += '</div></div>';
+
+            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px; margin-bottom:4px;">── 詳細牌意與解析 ──</div>';
+            validCards.forEach((c, idx) => { html += '<div style="width:100%; max-width:450px;">' + createLenormandBoxHtml(c, `第 ${idx+1} 張 (數字: ${usedNums[idx]})`) + '</div>'; });
+            html += '</div><div class="action-btn-group">';
+            html += '<button class="action-btn" onclick="captureSpread()">📸 儲存占卜截圖</button>';
+            html += '<button class="action-btn" onclick="saveSpreadToCloud()">💾 雲端存檔</button>';
+            html += '<button class="action-btn secondary" onclick="loadCloudHistory()">📂 雲端紀錄</button>';
+            html += '<button class="action-btn secondary" onclick="resetToHome()">🔄 重新抽牌</button></div>';
+            
+            area.innerHTML = html;
         }
 
-        function executeDraw() {
-            let spreadVal = document.getElementById("spreadSelect").value;
-            if (spreadVal === "diary") drawDailyDiary();
-            else if (spreadVal === "line3") drawLine3();
-            else if (spreadVal === "box9") drawBox9();
-            else if (spreadVal === "free") drawFreeSpread();
-            else if (spreadVal === "number") drawNumberSpread(); // 🔢 直覺數字觸發
-        }
-
+        // 一般牌陣繪製
         function drawDailyDiary() {
             let card = getRandomLenormand(1)[0];
             let area = document.getElementById("spreadArea");
@@ -888,7 +878,8 @@
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 📏 三 張 直 線 牌 陣 】</h2>';
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
             cards.forEach((c, idx) => { html += '<div style="width:100%; max-width:450px;">' + createLenormandBoxHtml(c, titles[idx]) + '</div>'; });
-            html += '</div><div class="action-btn-group">';
+            html += '</div>';
+            html += '<div class="action-btn-group">';
             html += '<button class="action-btn" onclick="captureSpread()">📸 儲存占卜截圖</button>';
             html += '<button class="action-btn" onclick="saveSpreadToCloud()">💾 雲端存檔</button>';
             html += '<button class="action-btn secondary" onclick="loadCloudHistory()">📂 雲端紀錄</button>';
@@ -942,49 +933,6 @@
             html += '<button class="action-btn" onclick="saveSpreadToCloud()">💾 雲端存檔</button>';
             html += '<button class="action-btn secondary" onclick="loadCloudHistory()">📂 雲端紀錄</button>';
             html += '<button class="action-btn secondary" onclick="resetToHome()">🔄 重新抽牌</button></div>';
-            area.innerHTML = html;
-        }
-
-        // ⚠️ 全新功能：雷諾曼直覺輸入數字 (1~36)
-        function drawNumberSpread() {
-            let inputs = document.querySelectorAll(".num-input");
-            let validCards = [];
-            let usedNums = [];
-
-            for (let i = 0; i < inputs.length; i++) {
-                let val = inputs[i].value.trim();
-                if (!val) { alert(`請填寫第 ${i + 1} 格的數字！`); return; }
-                let n = parseInt(val);
-                if (isNaN(n) || n < 1 || n > 36) { alert(`第 ${i + 1} 格「${val}」無效！雷諾曼卡只有 1 到 36 號。`); return; }
-                if (usedNums.includes(n)) { alert(`數字 ${n} 重複了！一副牌每張數字只有一張，請輸入不同的數字。`); return; }
-                
-                usedNums.push(n);
-                let card = LENORMAND_DECK.find(c => c.no === n);
-                validCards.push(card);
-            }
-
-            if(validCards.length === 0) return;
-
-            let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
-
-            let html = `<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🔢 直 覺 數 字 (共 ${validCards.length} 張) 】</h2>`;
-            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
-            
-            // 手機版微縮圖預覽
-            html += '<div class="mobile-preview-section"><div style="font-size:12px; color:#38bdf8; font-weight:bold;">── 牌面總覽 ──</div>';
-            html += '<div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; max-width:320px;">';
-            validCards.forEach((c, idx) => { html += createMiniCardHtml(c, `數字 ${usedNums[idx]}`); });
-            html += '</div></div>';
-
-            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px; margin-bottom:4px;">── 詳細牌意與解析 ──</div>';
-            validCards.forEach((c, idx) => { html += '<div style="width:100%; max-width:450px;">' + createLenormandBoxHtml(c, `第 ${idx+1} 張 (數字: ${usedNums[idx]})`) + '</div>'; });
-            html += '</div><div class="action-btn-group">';
-            html += '<button class="action-btn" onclick="captureSpread()">📸 儲存占卜截圖</button>';
-            html += '<button class="action-btn" onclick="saveSpreadToCloud()">💾 雲端存檔</button>';
-            html += '<button class="action-btn secondary" onclick="loadCloudHistory()">📂 雲端紀錄</button>';
-            html += '<button class="action-btn secondary" onclick="resetToHome()">🔄 重新抽牌</button></div>';
-            
             area.innerHTML = html;
         }
     </script>
