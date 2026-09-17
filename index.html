@@ -52,28 +52,32 @@
 
         .control-panel {
             background-color: var(--panel-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-            padding: 8px 6px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            gap: 6px; text-align: center; width: 100%; z-index: 10;
+            padding: 10px 8px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 8px; text-align: center; width: 100%; z-index: 10;
         }
         .title { font-size: 15px; font-weight: bold; color: #e4e6eb; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
         
-        .control-row { display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: nowrap; width: 100%; max-width: 100%; overflow-x: auto; }
+        /* ⚠️ 修正手機版選單列排版與防裁切 */
+        .control-row { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: nowrap; width: 100%; max-width: 100%; overflow-x: auto; padding-bottom: 2px; }
         
-        button, select {
-            background-color: var(--accent); color: #000; border: none; padding: 5px 6px; font-size: 12px; font-weight: bold;
-            border-radius: 4px; cursor: pointer; transition: background 0.2s; white-space: nowrap;
+        button {
+            background-color: var(--accent); color: #000; border: none; padding: 0 12px; font-size: 13px; font-weight: bold;
+            border-radius: 6px; cursor: pointer; transition: background 0.2s; white-space: nowrap; height: 34px; display: flex; align-items: center; justify-content: center;
         }
         button:hover { background-color: var(--accent-hover); }
         
-        select { background-color: #0d0f14; border: 1px solid #475569; color: #fff; padding: 4px 6px; font-size: 14px; height: 26px; border-radius: 3px; flex-shrink: 1; }
+        select, input.small-input { 
+            background-color: #0d0f14; border: 1px solid #475569; color: #fff; padding: 4px 8px; font-size: 13px; 
+            height: 34px; border-radius: 4px; flex-shrink: 1; outline: none;
+        }
 
         /* 隱藏數字輸入框的原生上下箭頭 */
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         
         .config-box { 
-            background: rgba(30, 34, 48, 0.8); padding: 2px 6px; border-radius: 4px; border: 1px solid #33394d; 
-            display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: #38bdf8; 
-            white-space: nowrap; flex-shrink: 1; min-height: 28px; cursor: pointer;
+            background: rgba(30, 34, 48, 0.8); padding: 4px 8px; border-radius: 6px; border: 1px solid #33394d; 
+            display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: #38bdf8; 
+            white-space: nowrap; flex-shrink: 1; min-height: 34px; cursor: pointer;
         }
 
         .workspace { flex: 1; padding: 20px 16px 80px 16px; display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; width: 100%; background: transparent !important; }
@@ -132,23 +136,9 @@
         .box9-grid-desktop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 1250px; margin: 0 auto; }
         @media (max-width: 1000px) { .box9-grid-desktop { grid-template-columns: 1fr; } }
 
-        /* ====== 按鈕核心排版修正：完美一致化 ====== */
-        .action-btn-group { 
-            display: flex; gap: 10px; width: 100%; max-width: 480px; margin: 15px auto 20px auto; 
-            justify-content: center; z-index: 100; flex-wrap: wrap; 
-        }
-        .action-btn { 
-            background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #000; border: none; 
-            padding: 0 16px; font-size: 13px; font-weight: bold; border-radius: 8px; cursor: pointer; 
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4); transition: all 0.2s; 
-            /* Flex 比例固定：如果超過兩個會自動折行，維持等比例大小 */
-            flex: 1 1 calc(50% - 15px); min-width: 130px; height: 44px; /* 固定高度確保一致性 */
-            display: flex; align-items: center; justify-content: center; text-align: center; box-sizing: border-box;
-        }
-        .action-btn.secondary { 
-            background: rgba(30, 34, 48, 0.9); color: #38bdf8; border: 1px solid #334155; box-shadow: none; 
-            /* 移除之前所有的 !important 寬高破壞屬性，讓它完美跟隨主按鈕的大小 */
-        }
+        .action-btn-group { display: flex; gap: 10px; width: 100%; max-width: 480px; margin: 15px auto 20px auto; justify-content: center; z-index: 100; flex-wrap: wrap; }
+        .action-btn { background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #000; border: none; padding: 0 16px; font-size: 13px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4); transition: all 0.2s; flex: 1 1 calc(50% - 15px); min-width: 130px; height: 44px; display: flex; align-items: center; justify-content: center; text-align: center; box-sizing: border-box; }
+        .action-btn.secondary { background: rgba(30, 34, 48, 0.9); color: #38bdf8; border: 1px solid #334155; box-shadow: none; }
         .action-btn:hover { transform: translateY(-2px); }
 
         /* 浮水印 */
@@ -158,9 +148,7 @@
         /* ====== 彈窗系統 ====== */
         .screenshot-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; flex-direction: column; gap: 10px; }
         .screenshot-modal img, .preview-modal img { max-width: 100%; max-height: 65vh; border-radius: 6px; border: 2px solid #38bdf8; box-shadow: 0 4px 20px rgba(0,0,0,0.8); object-fit: contain; }
-        /* 防止彈窗內單顆按鈕過度延伸 */
-        .screenshot-modal .action-btn { flex: 0 0 auto; width: auto; min-width: 140px; }
-        
+        .screenshot-modal .action-btn { flex: none; width: auto; min-width: 120px; padding: 0 24px; margin-top: 10px; }
         .preview-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; flex-direction: column; gap: 10px; }
         .screenshot-tip { font-size: 13px; color: #38bdf8; font-weight: bold; text-align: center; background: rgba(13, 15, 20, 0.8); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3); }
 
@@ -271,7 +259,7 @@
         <div class="history-content" onclick="event.stopPropagation()">
             <div class="history-header" id="historyTitle">📂 個人雲端占卜圖面紀錄</div>
             <div id="historyBody" class="history-body"><div style="text-align:center; color:#94a3b8; padding:20px;">載入中...</div></div>
-            <div class="action-btn-group" style="margin-top: 12px; margin-bottom:0;">
+            <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; justify-content: center;">
                 <button class="action-btn secondary" style="background:#f43f5e; border-color:#be123c; color:#fff;" onclick="deleteSelectedHistory()">🗑️ 刪除所選</button>
                 <button class="action-btn secondary" onclick="loadCloudHistory()">🔄 重新整理</button>
                 <button class="action-btn" onclick="document.getElementById('historyModal').style.display='none'">關閉視窗</button>
@@ -508,12 +496,11 @@
             let finalQuestion = userQuestion.trim() === "" ? defaultTimeStr : userQuestion.trim();
 
             let target = document.getElementById("spreadArea");
-            
-            // 🔥 存檔前安全剝離所有底部按鈕
-            let tempDiv = document.createElement("div");
-            tempDiv.innerHTML = target.innerHTML;
-            tempDiv.querySelectorAll(".action-btn-group").forEach(b => b.remove());
-            let htmlContent = tempDiv.innerHTML;
+            let btnGroup = document.querySelector(".action-btn-group");
+            if(btnGroup) btnGroup.style.display = "none";
+
+            let htmlContent = target.innerHTML;
+            if(btnGroup) btnGroup.style.display = "flex";
 
             try {
                 let spreadTitle = document.querySelector("#spreadArea h2") ? document.querySelector("#spreadArea h2").textContent.trim() : "雷諾曼占卜紀錄";
