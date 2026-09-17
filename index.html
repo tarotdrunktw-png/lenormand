@@ -53,31 +53,30 @@
         .control-panel {
             background-color: var(--panel-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
             padding: 10px 8px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            gap: 8px; text-align: center; width: 100%; z-index: 10;
+            gap: 10px; text-align: center; width: 100%; z-index: 10;
         }
         .title { font-size: 15px; font-weight: bold; color: #e4e6eb; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
         
-        /* ⚠️ 修正手機版選單列排版與防裁切 */
-        .control-row { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: nowrap; width: 100%; max-width: 100%; overflow-x: auto; padding-bottom: 2px; }
+        /* ⚠️ 修正：改為 wrap 允許折行，並加上 flex-shrink: 0 避免元件被擠壓變形 */
+        .control-row { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; width: 100%; max-width: 100%; padding-bottom: 2px; }
         
         button {
-            background-color: var(--accent); color: #000; border: none; padding: 0 12px; font-size: 13px; font-weight: bold;
-            border-radius: 6px; cursor: pointer; transition: background 0.2s; white-space: nowrap; height: 34px; display: flex; align-items: center; justify-content: center;
+            background-color: var(--accent); color: #000; border: none; padding: 0 16px; font-size: 13px; font-weight: bold;
+            border-radius: 6px; cursor: pointer; transition: background 0.2s; white-space: nowrap; height: 34px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         button:hover { background-color: var(--accent-hover); }
         
         select, input.small-input { 
             background-color: #0d0f14; border: 1px solid #475569; color: #fff; padding: 4px 8px; font-size: 13px; 
-            height: 34px; border-radius: 4px; flex-shrink: 1; outline: none;
+            height: 34px; border-radius: 4px; outline: none; flex-shrink: 0;
         }
 
-        /* 隱藏數字輸入框的原生上下箭頭 */
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         
         .config-box { 
             background: rgba(30, 34, 48, 0.8); padding: 4px 8px; border-radius: 6px; border: 1px solid #33394d; 
             display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: #38bdf8; 
-            white-space: nowrap; flex-shrink: 1; min-height: 34px; cursor: pointer;
+            white-space: nowrap; min-height: 34px; cursor: pointer; flex-shrink: 0;
         }
 
         .workspace { flex: 1; padding: 20px 16px 80px 16px; display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; width: 100%; background: transparent !important; }
@@ -148,7 +147,7 @@
         /* ====== 彈窗系統 ====== */
         .screenshot-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; flex-direction: column; gap: 10px; }
         .screenshot-modal img, .preview-modal img { max-width: 100%; max-height: 65vh; border-radius: 6px; border: 2px solid #38bdf8; box-shadow: 0 4px 20px rgba(0,0,0,0.8); object-fit: contain; }
-        .screenshot-modal .action-btn { flex: none; width: auto; min-width: 120px; padding: 0 24px; margin-top: 10px; }
+        .screenshot-modal .action-btn { flex: none; width: auto; min-width: 120px; padding: 10px 24px; margin-top: 10px; }
         .preview-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; flex-direction: column; gap: 10px; }
         .screenshot-tip { font-size: 13px; color: #38bdf8; font-weight: bold; text-align: center; background: rgba(13, 15, 20, 0.8); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3); }
 
