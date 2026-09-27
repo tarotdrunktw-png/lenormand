@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>醉酒塔羅 - 偉特塔羅 x 雷諾曼占卜系統</title>
+    <title>醉酒塔羅 - 雷諾曼占卜系統</title>
+    <!-- 網頁分頁圖標 (Favicon) 設定 -->
     <link rel="icon" type="image/jpeg" href="tarot_drunk.jpg">
 
-    <meta property="og:title" content="醉酒塔羅 - 偉特塔羅 x 雷諾曼占卜系統">
-    <meta property="og:description" content="偉特塔羅 × 雷諾曼 占卜系統，解析你的迷惘。">
+    <!-- 社群分享預覽標籤 -->
+    <meta property="og:title" content="醉酒塔羅 - 雷諾曼占卜系統">
+    <meta property="og:description" content="雷諾曼 占卜系統，解析你的迷惘。">
     <meta property="og:image" content="https://tarotdrunktw-png.github.io/tarot_app/tarot_drunk.jpg">
     <meta property="og:url" content="https://tarotdrunktw-png.github.io/tarot_app/">
     <meta property="og:type" content="website">
 
+    <!-- 引入 html2canvas 函式庫供截圖使用 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
@@ -28,7 +31,7 @@
             --pos-green: #2ecc71;
             --neu-yellow: #f1c40f;
             --neg-red: #f43f5e;
-            --supp-color: #8b5cf6; /* 補充牌專用紫 */
+            --supp-color: #8b5cf6; /* 補充牌專屬紫 */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Microsoft JhengHei", "Heiti TC", sans-serif; }
@@ -55,7 +58,7 @@
         }
         .title { font-size: 15px; font-weight: bold; color: #e4e6eb; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
         
-        /* 膠囊式排版 */
+        /* 膠囊式控制列 */
         .control-row { 
             display: flex; align-items: center; justify-content: center; gap: 8px; 
             flex-wrap: nowrap; width: 100%; max-width: 100%; overflow-x: auto; 
@@ -65,8 +68,8 @@
         
         .config-box { 
             background: #0d0f14; border: 1px solid #333a4f; border-radius: 6px; 
-            display: flex; align-items: center; justify-content: center; padding: 0 4px 0 8px; height: 34px; 
-            font-size: 13px; color: #94a3b8; white-space: nowrap; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; padding: 0 4px 0 8px; height: 36px; 
+            font-size: 13px; color: #a5b4fc; white-space: nowrap; flex-shrink: 0;
         }
         .config-box span { font-weight: bold; display: flex; align-items: center; height: 100%; }
         
@@ -76,18 +79,15 @@
             text-align: center; text-align-last: center; display: flex; align-items: center;
         }
         select option { background: #0d0f14; color: #fff; text-align: center; }
-
-        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         
         .draw-btn {
-            background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #000; border: none; 
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: #fff; border: none; 
             padding: 0 16px; font-size: 14px; font-weight: bold; border-radius: 6px; 
-            height: 34px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3); transition: all 0.2s; margin: 0;
+            height: 36px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(67, 56, 202, 0.3); transition: all 0.2s; margin: 0;
         }
-        .draw-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(14, 165, 233, 0.5); }
+        .draw-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(67, 56, 202, 0.5); }
 
-        /* 手機版極致微調 */
         @media (max-width: 430px) {
             .control-panel { padding: 8px 4px; gap: 8px; }
             .control-row { gap: 4px; justify-content: flex-start; } 
@@ -123,9 +123,10 @@
         .history-item { background: #232736; border: 1px solid #2f364b; padding: 10px; border-radius: 6px; font-size: 12px; color: #cbd5e1; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
         .history-item:hover { background: #333b52; }
 
-        /* 雷諾曼主牌與補充牌樣式 */
-        .leno-card-box { width: 100%; max-width: 395px; min-height: 180px; background-color: var(--card-bg); border: 1px solid #2d3343; border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5); margin: 0 auto; }
-        .banner { background-color: #1e293b; color: #38bdf8; font-size: 13px; font-weight: bold; padding: 6px 10px; text-align: center; border-bottom: 1px solid #334155; }
+        /* 雷諾曼主牌樣式 */
+        .card-node-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 395px; }
+        .leno-card-box { width: 100%; min-height: 180px; background-color: var(--card-bg); border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box; }
+        .banner { font-size: 13px; font-weight: bold; padding: 6px 10px; text-align: center; }
         .leno-content { background-color: var(--inner-bg); padding: 8px; flex: 1; display: flex; gap: 10px; align-items: center; }
         .leno-img { width: 70px; height: 105px; object-fit: cover; border: 1px solid #444; background: #000; border-radius: 4px; flex-shrink: 0; }
         .leno-info { flex: 1; display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
@@ -137,6 +138,13 @@
         .badge-neg { background-color: var(--neg-red); color: #fff; }
         .leno-desc-box { background: #242938; padding: 6px 8px; border-radius: 4px; color: #cbd5e1; margin-top: 2px; line-height: 1.4; }
 
+        .supp-toggle-btn {
+            background: rgba(139, 92, 246, 0.1); border: 1px solid #8b5cf6; color: #c4b5fd; padding: 6px 12px; 
+            border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; 
+            transition: all 0.2s; display: flex; justify-content: center; align-items: center; width: 100%;
+        }
+        .supp-toggle-btn:hover { background: rgba(139, 92, 246, 0.25); }
+
         /* 手機縮圖預覽 */
         .mobile-preview-section { display: none; width: 100%; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 4px; }
         @media (max-width: 768px) { .mobile-preview-section { display: flex; } }
@@ -146,9 +154,11 @@
         .mini-title { font-size: 9px; color: #38bdf8; font-weight: bold; white-space: nowrap; }
         .mini-name { font-size: 10px; font-weight: bold; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70px; }
 
-        /* 九宮格縮圖幾何 */
+        /* 排版幾何 */
+        .branch-row { display: flex; width: 100%; justify-content: center; gap: 16px; flex-wrap: wrap; }
+        .branch-col { display: flex; flex-direction: column; gap: 12px; align-items: center; flex: 1; min-width: 395px; }
+
         .box9-visual-mobile { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 310px; margin: 5px auto; justify-items: center; align-items: center; }
-        /* 電腦版九宮格真實棋盤網格佈局 */
         .box9-grid-desktop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 1250px; margin: 0 auto; }
         @media (max-width: 1000px) { .box9-grid-desktop { grid-template-columns: 1fr; } }
 
@@ -164,23 +174,20 @@
         .action-btn.purple-btn { background: linear-gradient(135deg, #8b5cf6, #c4b5fd); color: #000; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); border:none;}
         .action-btn:hover { transform: translateY(-2px); }
 
-        /* 浮水印 */
         .screenshot-watermark-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99; overflow: hidden; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 150px; align-items: center; justify-items: center; opacity: 0.10; }
         .watermark-item { font-size: 15px; color: #38bdf8; font-weight: bold; transform: rotate(-30deg); white-space: nowrap; user-select: none; }
 
         /* ====== 彈窗系統 ====== */
         .screenshot-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; flex-direction: column; gap: 10px; }
         .screenshot-modal img, .preview-modal img { max-width: 100%; max-height: 65vh; border-radius: 6px; border: 2px solid #38bdf8; box-shadow: 0 4px 20px rgba(0,0,0,0.8); object-fit: contain; }
-        .screenshot-modal .action-btn { flex: none; width: auto; min-width: 120px; padding: 0 24px; margin-top: 10px; }
+        .screenshot-modal .action-btn { flex: none; width: auto; min-width: 120px; padding: 10px 24px; margin-top: 10px; }
         .preview-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; flex-direction: column; gap: 10px; }
         .screenshot-tip { font-size: 13px; color: #38bdf8; font-weight: bold; text-align: center; background: rgba(13, 15, 20, 0.8); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3); }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
         .modal-content { background: #1a1c24; width: 100%; max-width: 500px; max-height: 85vh; border-radius: 8px; border: 1px solid #333a4f; display: flex; flex-direction: column; overflow: hidden; padding: 16px; }
         .modal-header { font-size: 16px; font-weight: bold; color: #38bdf8; margin-bottom: 12px; text-align: center; }
-        .modal-body { overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
         
-        /* 直覺/補充輸入彈窗樣式 */
         .int-input-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; }
         .int-num-input { width: 80px; height: 45px; text-align: center; font-size: 18px; font-weight: bold; background: #0d0f14; border: 2px solid #475569; color: #38bdf8; border-radius: 6px; }
         .int-num-input:focus { border-color: #0ea5e9; outline: none; }
@@ -214,7 +221,7 @@
                     </select>
                 </div>
 
-                <!-- 🎯 主題占卜選擇框 -->
+                <!-- 🎯 主題占卜專用選擇框 -->
                 <div class="config-box" id="themeSelectBox" style="display: none;">
                     <span>主題:</span>
                     <select id="themeCardSelect">
@@ -227,7 +234,12 @@
                     </select>
                 </div>
 
-                <!-- 數字下拉顯示框 (直覺數字/主題占卜共用數量) -->
+                <div class="config-box" id="freeConfigBox" style="display: none;" onclick="promptFreeCount()">
+                    <span>張數:</span>
+                    <span id="freeCountDisplay" style="color: #fff; padding: 0 4px;">3</span>
+                </div>
+
+                <!-- 數字下拉顯示框 (直覺/主題共用) -->
                 <div class="config-box" id="numCountBox" style="display: none;">
                     <span id="numCountLabel">牌數:</span>
                     <select id="intuitiveCount">
@@ -237,12 +249,6 @@
                         <option value="4">4</option>
                         <option value="5">5</option>
                     </select>
-                </div>
-
-                <!-- 自由抽牌自訂框 -->
-                <div class="config-box" id="freeConfigBox" style="display: none;" onclick="promptFreeCount()">
-                    <span>張數:</span>
-                    <span id="freeCountDisplay" style="color: #fff; padding: 0 4px;">3</span>
                 </div>
 
                 <button class="draw-btn" onclick="executeDraw()">✨ 開始占卜</button>
@@ -272,7 +278,6 @@
             <div class="modal-header">🔢 請輸入直覺數字</div>
             <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">請為每一格輸入 1~36 的不重複數字</div>
             <div id="intuitiveModalBody" style="display: flex; flex-direction: column; gap: 10px; align-items: center; padding: 10px 0;">
-                <!-- JS 動態生成輸入框 -->
             </div>
             <div class="action-btn-group" style="margin-top: 20px;">
                 <button class="action-btn" onclick="confirmIntuitiveDraw()">確定抽牌</button>
@@ -283,17 +288,17 @@
 
     <!-- 🃏 抽補充牌彈窗 -->
     <div id="supplementModal" class="modal-overlay" onclick="closeSupplementModal(event)">
-        <div class="modal-content" style="max-width: 350px; text-align: center;" onclick="event.stopPropagation()">
+        <div class="modal-content" style="max-width: 380px; text-align: center;" onclick="event.stopPropagation()">
             <div class="modal-header" style="color: var(--supp-color);">🃏 抽取補充牌</div>
             <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">為指定的牌位抽取額外的細節補充牌，<br>已抽出的牌絕對不會重複出現。</div>
             <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; padding: 10px 0;">
                 
-                <div class="config-box" style="width: 80%; justify-content: space-between; padding: 0 10px;">
-                    <span>目標牌位:</span>
-                    <select id="suppTargetPos" style="flex: 1; text-align: right; margin-left: 10px;"></select>
+                <div class="config-box" style="width: 90%; justify-content: space-between; padding: 0 10px;">
+                    <span style="flex-shrink:0;">目標牌位:</span>
+                    <select id="suppTargetPos" style="flex: 1; text-align: right; margin-left: 10px; max-width: 70%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;"></select>
                 </div>
                 
-                <div class="config-box" style="width: 80%; justify-content: space-between; padding: 0 10px;">
+                <div class="config-box" style="width: 90%; justify-content: space-between; padding: 0 10px;">
                     <span>補充張數:</span>
                     <select id="suppCount" style="flex: 1; text-align: right; margin-left: 10px;">
                         <option value="1">1 張</option>
@@ -353,11 +358,10 @@
         let currentUsername = localStorage.getItem('leno_username') || "";
         window.cachedHistoryData = [];
 
-        // 🌟 牌庫與抽牌狀態變數 (用於防重複與補充牌)
+        // 🌟 牌庫與抽牌狀態變數 (防重複與樹狀補充)
         let currentRemainingDeck = [];
-        let currentDrawnCards = [];
-        window.currentSpreadType = "";
-        window.currentDrawCount = 0; // 記錄畫面上主牌位的數量
+        let globalCardCounter = 0;
+        let activeCardNodes = []; // 存放畫面上所有的牌節點資訊
 
         function promptFreeCount() {
             let input = prompt("請輸入自訂抽牌張數 (1 - 9)：", customCount);
@@ -570,10 +574,16 @@
 
             let target = document.getElementById("spreadArea");
             
-            // 🔥 存檔前安全剝離所有底部按鈕
+            // 🔥 存檔前安全剝離所有底部按鈕與展開按鈕
             let tempDiv = document.createElement("div");
             tempDiv.innerHTML = target.innerHTML;
-            tempDiv.querySelectorAll(".action-btn-group").forEach(b => b.remove());
+            tempDiv.querySelectorAll(".action-btn-group, .supp-toggle-btn").forEach(b => b.remove());
+            
+            // 強制展開所有隱藏的補充牌容器供存檔
+            tempDiv.querySelectorAll("div[id^='supp-container-']").forEach(div => {
+                div.style.display = "flex";
+            });
+
             let htmlContent = tempDiv.innerHTML;
 
             try {
@@ -674,12 +684,6 @@
                 return;
             }
 
-            // 🔥 自動淨化舊歷史紀錄中的幽靈按鈕
-            let tempDiv = document.createElement('div');
-            tempDiv.innerHTML = item.html;
-            tempDiv.querySelectorAll(".action-btn-group").forEach(b => b.remove());
-            let cleanHtml = tempDiv.innerHTML;
-
             let container = document.getElementById("spreadArea");
             container.classList.add("is-wide"); 
             
@@ -688,7 +692,7 @@
                     <div style="color:#94a3b8; font-size:12px; font-weight:bold;">🕒 占卜時間：${item.dateStr}</div>
                     <div style="color:#38bdf8; font-size:16px; margin-top:8px; font-weight:bold;">❓ 問題：${item.question || "未填寫"}</div>
                 </div>
-                ${cleanHtml}
+                ${item.html}
                 <div class="action-btn-group" style="margin-top: 25px;">
                     <button class="action-btn" onclick="captureSpreadLocally()">📸 儲存占卜截圖</button>
                     <button class="action-btn secondary" onclick="loadCloudHistory()">📂 回歷史清單</button>
@@ -711,8 +715,7 @@
             document.getElementById("numCountBox").style.display = (isNumber || isTheme) ? "flex" : "none";
             document.getElementById("themeSelectBox").style.display = isTheme ? "flex" : "none";
 
-            // 針對主題占卜更改按鈕文字提示
-            let numLabel = document.querySelector("#numCountBox span");
+            let numLabel = document.querySelector("#numCountLabel");
             if (isTheme) numLabel.textContent = "展開張數:";
             else numLabel.textContent = "牌數:";
         }
@@ -734,71 +737,6 @@
                 </div>
             `;
             document.querySelector(".workspace").scrollTop = 0;
-        }
-
-        function executeDraw() {
-            let spreadVal = document.getElementById("spreadSelect").value;
-            if (spreadVal === "number") {
-                showIntuitiveModal();
-            } else {
-                if (spreadVal === "diary") drawDailyDiary();
-                else if (spreadVal === "line3") drawLine3();
-                else if (spreadVal === "box9") drawBox9();
-                else if (spreadVal === "free") drawFreeSpread();
-                else if (spreadVal === "theme") drawThemeSpread();
-            }
-        }
-
-        function renderActionButtons() {
-            let html = '<div class="action-btn-group" style="margin-top: 25px;">';
-            html += '<button class="action-btn purple-btn" onclick="openSupplementModal()">🃏 抽補充牌</button>';
-            html += '<button class="action-btn" onclick="captureSpreadLocally()">📸 儲存占卜截圖</button>';
-            html += '<button class="action-btn" onclick="saveSpreadToCloud()">💾 雲端存檔</button>';
-            html += '<button class="action-btn secondary" onclick="loadCloudHistory()">📂 雲端紀錄</button>';
-            html += '<button class="action-btn secondary" onclick="resetToHome()">🔄 重新抽牌</button>';
-            html += '</div>';
-            return html;
-        }
-
-        function captureSpreadLocally() {
-            let target = document.getElementById("spreadArea");
-            
-            // 🔥 隱藏畫面上所有的操作按鈕再截圖
-            let btnGroups = target.querySelectorAll(".action-btn-group");
-            btnGroups.forEach(btn => btn.style.display = "none");
-
-            let totalHeight = Math.max(target.scrollHeight, 500);
-            let watermarkContainer = document.createElement("div");
-            watermarkContainer.className = "screenshot-watermark-container";
-            watermarkContainer.style.height = totalHeight + "px";
-
-            let count = Math.ceil(totalHeight / 100) * 3;
-            for(let i = 0; i < count; i++) {
-                let item = document.createElement("div");
-                item.className = "watermark-item";
-                item.textContent = "🍸 醉酒塔羅 - 李特 @tarot.drunk";
-                watermarkContainer.appendChild(item);
-            }
-            target.appendChild(watermarkContainer);
-
-            html2canvas(target, { backgroundColor: "#0d0f14", scale: window.innerWidth < 768 ? 2.5 : 2, useCORS: true, logging: false, windowHeight: totalHeight })
-            .then(canvas => {
-                target.removeChild(watermarkContainer);
-                btnGroups.forEach(btn => btn.style.display = "flex");
-
-                let dataUrl = canvas.toDataURL("image/png");
-                if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-                    document.getElementById("screenshotResultImg").src = dataUrl;
-                    document.getElementById("screenshotModal").style.display = "flex";
-                } else {
-                    let link = document.createElement("a"); link.download = "醉酒塔羅-雷諾曼占卜結果.png"; link.href = dataUrl; link.click();
-                }
-            }).catch(err => {
-                if(watermarkContainer.parentNode) target.removeChild(watermarkContainer);
-                btnGroups.forEach(btn => btn.style.display = "flex");
-                console.error("截圖失敗", err);
-                alert("截圖產生失敗，請稍後再試");
-            });
         }
 
         const LENORMAND_DECK = [
@@ -852,24 +790,21 @@
         // 🌟 真實驗擬牌庫抽牌法 (防重複) 🌟
         function initDeck() {
             currentRemainingDeck = shuffle(LENORMAND_DECK);
-            currentDrawnCards = [];
+            globalCardCounter = 0;
+            activeCardNodes = [];
         }
 
         function drawCardsFromDeck(count) {
             if(count > currentRemainingDeck.length) return [];
-            let drawn = currentRemainingDeck.splice(0, count);
-            currentDrawnCards.push(...drawn);
-            return drawn;
+            return currentRemainingDeck.splice(0, count);
         }
 
         function drawSpecificCardFromDeck(num) {
             let idx = currentRemainingDeck.findIndex(c => c.no === num);
             if(idx > -1) {
-                let card = currentRemainingDeck.splice(idx, 1)[0];
-                currentDrawnCards.push(card);
-                return card;
+                return currentRemainingDeck.splice(idx, 1)[0];
             }
-            return null; // 已經被抽走
+            return null;
         }
 
         function getBasePath() {
@@ -881,58 +816,53 @@
             return "./";
         }
 
-        function createLenormandBoxHtml(c, posTitle) {
-            let base = getBasePath();
-            let imgPath = base + "lenormand/" + c.file;
-            let polClass = {"正面": "badge-pos", "中性": "badge-neu", "負面": "badge-neg"}[c.polarity];
+        // ====== 牌卡 HTML 渲染工廠 ====== //
+        function renderCardNode(card, posTitle, nodeLabel, isSupp = false) {
+            let nodeId = "node-" + (++globalCardCounter);
+            let domId = "card-wrapper-" + nodeId;
+            
+            activeCardNodes.push({ id: nodeId, label: nodeLabel, card: card, domId: domId });
 
-            let html = '<div class="leno-card-box">';
-            if (posTitle) html += '<div class="banner">' + posTitle + '</div>';
-            html += '<div class="leno-content">';
-            html += '<img src="' + imgPath + '" class="leno-img" onerror="this.style.display=\'none\'">';
-            html += '<div class="leno-info">';
-            html += '<div class="leno-header-row">';
-            html += '<span class="leno-name">[' + String(c.no).padStart(2,'0') + '] ' + c.name + ' (' + c.en + ')</span>';
-            html += '<span class="polarity-badge ' + polClass + '">' + c.polarity + '</span>';
-            html += '</div>';
-            html += '<div style="color: #38bdf8;">▸ 撲克牌對應：' + c.suit + '</div>';
-            html += '<div style="color: #cbd5e1;">▸ 核心主題：' + c.theme + '</div>';
-            html += '<div class="leno-desc-box">▸ 現實關鍵字：' + c.keywords.join('、') + '</div>';
-            html += '</div></div></div>';
-            return html;
-        }
+            let borderColor = isSupp ? '#8b5cf6' : '#2d3343';
+            let shadowColor = isSupp ? 'rgba(139, 92, 246, 0.3)' : 'rgba(0,0,0,0.5)';
+            let bannerBg = isSupp ? '#4c1d95' : '#1e293b';
+            let bannerColor = isSupp ? '#ddd6fe' : '#38bdf8';
+            let bannerBorder = isSupp ? '#7c3aed' : '#334155';
+            let polClass = {"正面": "badge-pos", "中性": "badge-neu", "負面": "badge-neg"}[card.polarity];
+            let imgPath = getBasePath() + "lenormand/" + card.file;
 
-        function createSupplementBoxHtml(c, posTitle) {
-            let base = getBasePath();
-            let imgPath = base + "lenormand/" + c.file;
-            let polClass = {"正面": "badge-pos", "中性": "badge-neu", "負面": "badge-neg"}[c.polarity];
-
-            let html = '<div class="leno-card-box" style="border-color: #8b5cf6; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);">';
-            if (posTitle) html += '<div class="banner" style="background-color: #4c1d95; color: #ddd6fe; border-bottom: 1px solid #7c3aed;">' + posTitle + '</div>';
-            html += '<div class="leno-content">';
-            html += '<img src="' + imgPath + '" class="leno-img" onerror="this.style.display=\'none\'">';
-            html += '<div class="leno-info">';
-            html += '<div class="leno-header-row">';
-            html += '<span class="leno-name">[' + String(c.no).padStart(2,'0') + '] ' + c.name + ' (' + c.en + ')</span>';
-            html += '<span class="polarity-badge ' + polClass + '">' + c.polarity + '</span>';
-            html += '</div>';
-            html += '<div style="color: #38bdf8;">▸ 撲克牌對應：' + c.suit + '</div>';
-            html += '<div style="color: #cbd5e1;">▸ 核心主題：' + c.theme + '</div>';
-            html += '<div class="leno-desc-box">▸ 現實關鍵字：' + c.keywords.join('、') + '</div>';
-            html += '</div></div></div>';
-            return html;
-        }
-
-        function createMiniCardHtml(c, titleText) {
-            let base = getBasePath();
-            let imgPath = base + "lenormand/" + c.file;
             return `
-                <div class="mini-card">
-                    <div class="mini-title">${titleText}</div>
-                    <img src="${imgPath}" class="mini-img" onerror="this.style.display='none'">
-                    <div class="mini-name">${c.name}</div>
+                <div id="${domId}" class="card-node-wrapper">
+                    <div class="leno-card-box" style="border-color:${borderColor}; box-shadow: 0 4px 10px ${shadowColor}; margin:0; width:100%;">
+                        <div class="banner" style="background-color:${bannerBg}; color:${bannerColor}; border-bottom:1px solid ${bannerBorder};">${posTitle}</div>
+                        <div class="leno-content">
+                            <img src="${imgPath}" class="leno-img" onerror="this.style.display='none'">
+                            <div class="leno-info">
+                                <div class="leno-header-row">
+                                    <span class="leno-name">[${String(card.no).padStart(2,'0')}] ${card.name} (${card.en})</span>
+                                    <span class="polarity-badge ${polClass}">${card.polarity}</span>
+                                </div>
+                                <div style="color: #38bdf8;">▸ 撲克對應：${card.suit}</div>
+                                <div style="color: #cbd5e1;">▸ 核心主題：${card.theme}</div>
+                                <div class="leno-desc-box">▸ 現實關鍵字：${card.keywords.join('、')}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="toggle-btn-${nodeId}" class="supp-toggle-btn" style="display:none;" onclick="toggleSupp('${nodeId}')"></button>
+                    <div id="supp-container-${nodeId}" style="display:none; flex-direction:column; gap:16px; width:100%; margin-top:12px; align-items:center; border-left: 2px dashed #8b5cf6; padding-left: 8px; box-sizing: border-box;"></div>
                 </div>
             `;
+        }
+
+        function renderActionButtons() {
+            let html = '<div class="action-btn-group">';
+            html += '<button class="action-btn purple-btn" onclick="openSupplementModal()">🃏 抽補充牌</button>';
+            html += '<button class="action-btn" onclick="captureSpreadLocally()">📸 儲存占卜截圖</button>';
+            html += '<button class="action-btn" onclick="saveSpreadToCloud()">💾 雲端存檔</button>';
+            html += '<button class="action-btn secondary" onclick="loadCloudHistory()">📂 雲端紀錄</button>';
+            html += '<button class="action-btn secondary" onclick="resetToHome()">🔄 重新抽牌</button>';
+            html += '</div>';
+            return html;
         }
 
         // ====== 補充牌系統 ====== //
@@ -944,18 +874,12 @@
             let select = document.getElementById("suppTargetPos");
             select.innerHTML = "";
             
-            let labelPrefix = window.currentSpreadType === 'theme' ? "展開牌 " : "第 ";
+            // 下拉顯示「當前畫面上所有的牌名」
+            activeCardNodes.forEach(node => {
+                let text = `[${node.label}] ${node.card.name}`;
+                select.innerHTML += `<option value="${node.id}">${text}</option>`;
+            });
             
-            if (window.currentSpreadType === 'theme') {
-                select.innerHTML += '<option value="0">主題指示牌</option>';
-                for(let i = 1; i < window.currentDrawCount; i++) {
-                    select.innerHTML += `<option value="${i}">${labelPrefix}${i} 張</option>`;
-                }
-            } else {
-                for(let i = 0; i < window.currentDrawCount; i++) {
-                    select.innerHTML += `<option value="${i}">${labelPrefix}${i+1} 張</option>`;
-                }
-            }
             document.getElementById("supplementModal").style.display = "flex";
         }
 
@@ -964,7 +888,7 @@
         }
 
         function confirmSupplement() {
-            let posIdx = parseInt(document.getElementById("suppTargetPos").value);
+            let targetNodeId = document.getElementById("suppTargetPos").value;
             let count = parseInt(document.getElementById("suppCount").value);
             
             if(count > currentRemainingDeck.length) {
@@ -973,137 +897,97 @@
                 if(count === 0) { closeSupplementModal(); return; }
             }
             
-            let drawnCards = drawCardsFromDeck(count);
-            let wrapper = document.getElementById("card-wrapper-" + posIdx);
-            
-            if(!wrapper) { alert("系統發生錯誤，找不到目標牌位"); return; }
-            
-            let suppContainer = wrapper.querySelector('.supp-container');
-            if(!suppContainer) {
-                suppContainer = document.createElement("div");
-                suppContainer.className = "supp-container";
-                suppContainer.style.display = "flex";
-                suppContainer.style.flexDirection = "column";
-                suppContainer.style.gap = "8px";
-                suppContainer.style.marginTop = "8px";
-                wrapper.appendChild(suppContainer);
-            }
+            let targetNode = activeCardNodes.find(n => n.id === targetNodeId);
+            if(!targetNode) return;
 
-            drawnCards.forEach(c => {
+            let drawnCards = drawCardsFromDeck(count);
+            let suppContainer = document.getElementById("supp-container-" + targetNodeId);
+            let toggleBtn = document.getElementById("toggle-btn-" + targetNodeId);
+            
+            drawnCards.forEach((c) => {
+                let newLabel = `補充牌: ${targetNode.card.name}`;
+                let cardHtml = renderCardNode(c, `【補充牌】向下層延伸解讀`, newLabel, true);
+                
                 let tempDiv = document.createElement("div");
-                tempDiv.innerHTML = createSupplementBoxHtml(c, "【補充牌】");
-                suppContainer.appendChild(tempDiv.firstChild);
+                tempDiv.innerHTML = cardHtml;
+                while(tempDiv.firstChild) { suppContainer.appendChild(tempDiv.firstChild); }
             });
+            
+            let existingCount = parseInt(toggleBtn.getAttribute("data-count") || "0");
+            let newCount = existingCount + count;
+            toggleBtn.setAttribute("data-count", newCount);
+            
+            // 補充完預設折疊隱藏，強迫使用者點擊展開
+            suppContainer.style.display = "none";
+            toggleBtn.style.display = "flex";
+            toggleBtn.innerHTML = `🔽 展開補充牌 (共 ${newCount} 張)`;
+            toggleBtn.setAttribute("data-expanded", "false");
             
             closeSupplementModal();
         }
 
-        // ====== 直覺數字輸入彈窗系統 ====== //
-        function showIntuitiveModal() {
-            let count = parseInt(document.getElementById("intuitiveCount").value) || 3;
-            let body = document.getElementById("intuitiveModalBody");
-            body.innerHTML = "";
-            for (let i = 1; i <= count; i++) {
-                let row = document.createElement("div");
-                row.className = "int-input-row";
-                row.innerHTML = `<span style="color:#94a3b8; font-weight:bold; font-size:14px;">第 ${i} 張：</span>
-                                 <input type="number" class="int-num-input num-input" min="1" max="36" placeholder="#">`;
-                body.appendChild(row);
+        function toggleSupp(nodeId) {
+            let container = document.getElementById("supp-container-" + nodeId);
+            let btn = document.getElementById("toggle-btn-" + nodeId);
+            let isExpanded = btn.getAttribute("data-expanded") === "true";
+            let count = btn.getAttribute("data-count");
+            
+            if(isExpanded) {
+                container.style.display = "none";
+                btn.innerHTML = `🔽 展開補充牌 (共 ${count} 張)`;
+                btn.setAttribute("data-expanded", "false");
+            } else {
+                container.style.display = "flex";
+                btn.innerHTML = `🔼 收起補充牌 (共 ${count} 張)`;
+                btn.setAttribute("data-expanded", "true");
             }
-            document.getElementById("intuitiveModal").style.display = "flex";
         }
 
-        function closeIntuitiveModal() {
-            document.getElementById("intuitiveModal").style.display = "none";
-        }
-
-        function confirmIntuitiveDraw() {
-            let inputs = document.querySelectorAll("#intuitiveModalBody .num-input");
-            let usedNums = [];
-            let validCards = [];
-            
-            initDeck(); // 確保牌庫乾淨
-
-            for (let i = 0; i < inputs.length; i++) {
-                let val = inputs[i].value.trim();
-                if (!val) { alert(`請填寫第 ${i + 1} 張的數字！`); return; }
-                let n = parseInt(val);
-                if (isNaN(n) || n < 1 || n > 36) { alert(`第 ${i + 1} 張「${val}」無效！雷諾曼卡只有 1 到 36 號。`); return; }
-                if (usedNums.includes(n)) { alert(`數字 ${n} 重複了！一副牌每張數字只有一張。`); return; }
-                
-                usedNums.push(n);
-                let card = drawSpecificCardFromDeck(n);
-                if(card) validCards.push(card);
+        function executeDraw() {
+            let spreadVal = document.getElementById("spreadSelect").value;
+            if (spreadVal === "number") {
+                showIntuitiveModal();
+            } else {
+                if (spreadVal === "diary") drawDailyDiary();
+                else if (spreadVal === "line3") drawLine3();
+                else if (spreadVal === "box9") drawBox9();
+                else if (spreadVal === "free") drawFreeSpread();
+                else if (spreadVal === "theme") drawThemeSpread();
             }
-
-            if(validCards.length === 0) return;
-            closeIntuitiveModal();
-
-            window.currentSpreadType = "number";
-            window.currentDrawCount = validCards.length;
-
-            let area = document.getElementById("spreadArea");
-            area.classList.remove("is-wide");
-
-            let html = `<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🔢 直 覺 數 字 (共 ${validCards.length} 張) 】</h2>`;
-            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
-            
-            html += '<div class="mobile-preview-section"><div style="font-size:12px; color:#38bdf8; font-weight:bold;">── 牌面總覽 ──</div>';
-            html += '<div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; max-width:320px;">';
-            validCards.forEach((c, idx) => { html += createMiniCardHtml(c, `數字 ${usedNums[idx]}`); });
-            html += '</div></div>';
-
-            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px; margin-bottom:4px;">── 詳細牌意與解析 ──</div>';
-            validCards.forEach((c, idx) => { 
-                html += `<div id="card-wrapper-${idx}" style="width:100%; max-width:450px; display:flex; flex-direction:column;">`;
-                html += createLenormandBoxHtml(c, `第 ${idx+1} 張 (數字: ${usedNums[idx]})`);
-                html += `</div>`;
-            });
-            html += '</div>' + renderActionButtons();
-            
-            area.innerHTML = html;
         }
 
         // 一般牌陣繪製
         function drawDailyDiary() {
             initDeck();
-            window.currentSpreadType = "diary";
-            window.currentDrawCount = 1;
-
             let card = drawCardsFromDeck(1)[0];
             let area = document.getElementById("spreadArea");
             area.classList.remove("is-wide");
+            
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🃏 雷 諾 曼 每 日 日 記 】</h2>';
-            html += `<div id="card-wrapper-0" style="width:100%; max-width:450px; display:flex; flex-direction:column;">`;
-            html += createLenormandBoxHtml(card, "【今日能量指引】 核心事件與提醒") + '</div>';
-            html += renderActionButtons();
+            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
+            html += renderCardNode(card, "【今日能量指引】 核心事件與提醒", "今日指引");
+            html += '</div>' + renderActionButtons();
+            
             area.innerHTML = html;
         }
 
         function drawLine3() {
             initDeck();
-            window.currentSpreadType = "line3";
-            window.currentDrawCount = 3;
-
             let cards = drawCardsFromDeck(3);
             let area = document.getElementById("spreadArea");
             area.classList.remove("is-wide");
             let titles = ["【第一張·過去起因】", "【第二張·當前現狀】", "【第三張·未來發展】"];
+            
             let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 📏 三 張 直 線 牌 陣 】</h2>';
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
-            cards.forEach((c, idx) => { 
-                html += `<div id="card-wrapper-${idx}" style="width:100%; max-width:450px; display:flex; flex-direction:column;">`;
-                html += createLenormandBoxHtml(c, titles[idx]) + '</div>'; 
-            });
+            cards.forEach((c, idx) => { html += renderCardNode(c, titles[idx], `第 ${idx+1} 張`); });
             html += '</div>' + renderActionButtons();
+            
             area.innerHTML = html;
         }
 
         function drawBox9() {
             initDeck();
-            window.currentSpreadType = "box9";
-            window.currentDrawCount = 9;
-
             let cards = drawCardsFromDeck(9);
             let area = document.getElementById("spreadArea");
             area.classList.add("is-wide");
@@ -1125,10 +1009,7 @@
             html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px;">── 詳細牌意與解析 ──</div>';
 
             html += '<div class="box9-grid-desktop">';
-            cards.forEach((c, idx) => { 
-                html += `<div id="card-wrapper-${idx}" style="display:flex; flex-direction:column; justify-content:flex-start;">`;
-                html += createLenormandBoxHtml(c, titles[idx]) + '</div>'; 
-            });
+            cards.forEach((c, idx) => { html += renderCardNode(c, titles[idx], shortTitles[idx]); });
             html += '</div></div>' + renderActionButtons();
 
             area.innerHTML = html;
@@ -1137,63 +1018,17 @@
         function drawFreeSpread() {
             initDeck();
             let count = customCount;
-            window.currentSpreadType = "free";
-            window.currentDrawCount = count;
-
             let cards = drawCardsFromDeck(count);
             let area = document.getElementById("spreadArea");
             area.classList.remove("is-wide");
             
-            let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🎲 自 訂 雷 諾 曼（ ' + count + ' 張） 】</h2>';
+            let html = `<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🎲 自 訂 雷 諾 曼（ ${count} 張） 】</h2>`;
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
-            cards.forEach((c, idx) => { 
-                html += `<div id="card-wrapper-${idx}" style="width:100%; max-width:450px; display:flex; flex-direction:column;">`;
-                html += createLenormandBoxHtml(c, `第 ${idx+1} 張牌`) + '</div>'; 
-            });
+            cards.forEach((c, idx) => { html += renderCardNode(c, `第 ${idx+1} 張牌`, `第 ${idx+1} 張`); });
             html += '</div>' + renderActionButtons();
+            
             area.innerHTML = html;
         }
-
-        // 🎯 全新功能：主題占卜繪製
-        function drawThemeSpread() {
-            initDeck();
-            let themeNo = parseInt(document.getElementById("themeCardSelect").value);
-            let themeCard = drawSpecificCardFromDeck(themeNo); // 強制挑出指示牌
-            
-            let count = parseInt(document.getElementById("intuitiveCount").value) || 3;
-            let spreadCards = drawCardsFromDeck(count); // 抽出發展牌
-            
-            window.currentSpreadType = "theme";
-            window.currentDrawCount = 1 + count; 
-
-            let area = document.getElementById("spreadArea");
-            area.classList.add("is-wide"); 
-
-            let themeName = document.querySelector("#themeCardSelect option:checked").textContent.split(' ')[0].replace(/[^a-zA-Z\u4E00-\u9FFF]/g, '');
-
-            let html = `<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🎯 主題占卜：${themeName} 】</h2>`;
-            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:16px; width:100%;">';
-            
-            // 指示牌置頂
-            html += `<div id="card-wrapper-0" style="width:100%; max-width:450px; display:flex; flex-direction:column; margin-bottom:10px;">`;
-            html += createLenormandBoxHtml(themeCard, "【指示牌：主題核心】此牌代表您所詢問的主題能量");
-            html += `</div>`;
-            
-            // 展開的發展牌
-            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px;">── 發展解析與指引 ──</div>';
-            
-            html += '<div class="branch-row" style="width:100%; max-width:1250px; gap: 16px;">';
-            spreadCards.forEach((c, idx) => { 
-                html += `<div id="card-wrapper-${idx+1}" class="branch-col" style="min-width: 395px; justify-content:flex-start;">`;
-                html += createLenormandBoxHtml(c, `展開牌 ${idx+1}`); 
-                html += `</div>`;
-            });
-            html += '</div></div>';
-            
-            html += renderActionButtons();
-            area.innerHTML = html;
-        }
-
     </script>
 </body>
 </html>
