@@ -385,7 +385,7 @@
                     <select id="spreadSelect" onchange="toggleSpreadConfig()">
                         <option value="diary">🃏 雷諾曼日記 (單張)</option>
                         <option value="line3">📏 三張直線</option>
-                        <option value="box9">🔲 九宮格心靈透視 (9張)</option>
+                        <option value="box9">🔲 九宮格 (9張)</option>
                         <option value="free">🎲 自訂抽牌張數</option>
                     </select>
                 </div>
@@ -609,7 +609,7 @@
         function drawBox9() {
             let cards = getRandomLenormand(9);
             let area = document.getElementById("spreadArea");
-            let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🔲 九 宮 格 心 靈 透 視 】</h2>';
+            let html = '<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🔲 九 宮 格】</h2>';
             html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%; max-width:600px;">';
             
             cards.forEach((c, idx) => {
