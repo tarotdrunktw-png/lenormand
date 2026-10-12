@@ -165,6 +165,13 @@
         /* 排版幾何 */
         .branch-row { display: flex; width: 100%; justify-content: center; gap: 16px; flex-wrap: wrap; box-sizing: border-box; }
         .branch-col { display: flex; flex-direction: column; gap: 12px; align-items: center; flex: 1 1 280px; max-width: 395px; width: 100%; min-width: 0; box-sizing: border-box; }
+        .branch-title { font-size: 15px; font-weight: bold; color: #38bdf8; margin-bottom: 4px; text-align: center; }
+
+        /* 二擇一手機版縮圖幾何 */
+        .two-choices-visual-mobile { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+        .two-choices-top-mobile { display: flex; justify-content: center; }
+        .two-choices-branches-mobile { display: flex; width: 100%; justify-content: space-around; gap: 10px; }
+        .two-choices-col-mobile { display: flex; flex-direction: column; gap: 8px; align-items: center; }
 
         .box9-visual-mobile { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 310px; max-width: 100%; margin: 5px auto; justify-items: center; align-items: center; }
         .box9-grid-desktop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 1250px; margin: 0 auto; box-sizing: border-box; }
@@ -222,6 +229,7 @@
                     <span>牌陣:</span>
                     <select id="spreadSelect" onchange="toggleSpreadConfig()">
                         <option value="diary">🃏 日記 (單張)</option>
+                        <option value="two">⚖️ 二擇一</option>
                         <option value="line3">📏 三張直線</option>
                         <option value="box9">🔲 九宮格</option>
                         <option value="theme">🎯 主題占卜</option>
@@ -972,10 +980,72 @@
             }
         }
 
+        // ====== 直覺數字輸入彈窗系統 ====== //
+        function showIntuitiveModal() {
+            let count = parseInt(document.getElementById("intuitiveCount").value) || 3;
+            let body = document.getElementById("intuitiveModalBody");
+            body.innerHTML = "";
+            for (let i = 1; i <= count; i++) {
+                let row = document.createElement("div");
+                row.className = "int-input-row";
+                row.innerHTML = `<span style="color:#94a3b8; font-weight:bold; font-size:14px;">第 ${i} 張：</span>
+                                 <input type="number" class="int-num-input num-input" min="1" max="36" placeholder="#">`;
+                body.appendChild(row);
+            }
+            document.getElementById("intuitiveModal").style.display = "flex";
+        }
+
+        function closeIntuitiveModal() {
+            document.getElementById("intuitiveModal").style.display = "none";
+        }
+
+        function confirmIntuitiveDraw() {
+            let inputs = document.querySelectorAll("#intuitiveModalBody .num-input");
+            let usedNums = [];
+            let validCards = [];
+            
+            initDeck();
+
+            for (let i = 0; i < inputs.length; i++) {
+                let val = inputs[i].value.trim();
+                if (!val) { alert(`請填寫第 ${i + 1} 張的數字！`); return; }
+                let n = parseInt(val);
+                if (isNaN(n) || n < 1 || n > 36) { alert(`第 ${i + 1} 張「${val}」無效！雷諾曼卡只有 1 到 36 號。`); return; }
+                if (usedNums.includes(n)) { alert(`數字 ${n} 重複了！一副牌每張數字只有一張。`); return; }
+                
+                usedNums.push(n);
+                let card = drawSpecificCardFromDeck(n);
+                if(card) validCards.push(card);
+            }
+
+            if(validCards.length === 0) return;
+            closeIntuitiveModal();
+
+            let area = document.getElementById("spreadArea");
+            area.classList.remove("is-wide");
+
+            let html = `<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🔢 直 覺 數 字 (共 ${validCards.length} 張) 】</h2>`;
+            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;">';
+            
+            html += '<div class="mobile-preview-section"><div style="font-size:12px; color:#38bdf8; font-weight:bold;">── 牌面總覽 ──</div>';
+            html += '<div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; max-width:320px;">';
+            validCards.forEach((c, idx) => { html += createMiniCardHtml(c, `數字 ${usedNums[idx]}`); });
+            html += '</div></div>';
+
+            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px; margin-bottom:4px;">── 詳細牌意與解析 ──</div>';
+            validCards.forEach((c, idx) => { 
+                html += renderCardNode(c, `第 ${idx+1} 張 (數字: ${usedNums[idx]})`, `第 ${idx+1} 張`);
+            });
+            html += '</div>' + renderActionButtons();
+            
+            area.innerHTML = html;
+        }
+
         function executeDraw() {
             let spreadVal = document.getElementById("spreadSelect").value;
             if (spreadVal === "number") showIntuitiveModal();
             else if (spreadVal === "diary") drawDailyDiary();
+            else if (spreadVal === "two") drawTwoChoices();
             else if (spreadVal === "line3") drawLine3();
             else if (spreadVal === "box9") drawBox9();
             else if (spreadVal === "theme") drawThemeSpread();
@@ -1034,6 +1104,49 @@
             html += renderCardNode(card, "【今日能量指引】 核心事件與提醒", "今日指引");
             html += '</div>' + renderActionButtons();
             
+            area.innerHTML = html;
+        }
+
+        // ⚖️ 二擇一抉擇牌陣繪製
+        function drawTwoChoices() {
+            initDeck();
+            let cards = drawCardsFromDeck(5);
+            let area = document.getElementById("spreadArea");
+            area.classList.add("is-wide");
+
+            let titles = ["【現狀核心】", "【選擇 A · 過程】", "【選擇 A · 結果】", "【選擇 B · 過程】", "【選擇 B · 結果】"];
+            let shortLabels = ["1.現狀", "2.A過程", "3.A結果", "4.B過程", "5.B結果"];
+
+            let html = '<h2 style="color:#f8fafc; margin-bottom:4px; text-align:center; width:100%;">【 ⚖️ 二 擇 一 抉 擇 牌 陣 】</h2>';
+            html += '<div style="display:flex; flex-direction:column; gap:16px; width:100%; align-items:center;">';
+
+            /* 手機版專屬牌面總覽：二擇一幾何排版 */
+            html += '<div class="mobile-preview-section">';
+            html += '<div style="font-size:12px; color:#38bdf8; font-weight:bold;">── 牌面總覽 ──</div>';
+            html += '<div class="two-choices-visual-mobile">';
+            html += '<div class="two-choices-top-mobile">' + createMiniCardHtml(cards[0], "1.現狀") + '</div>';
+            html += '<div class="two-choices-branches-mobile">';
+            html += '<div class="two-choices-col-mobile">' + createMiniCardHtml(cards[1], "2.A過程") + createMiniCardHtml(cards[2], "3.A結果") + '</div>';
+            html += '<div class="two-choices-col-mobile">' + createMiniCardHtml(cards[3], "4.B過程") + createMiniCardHtml(cards[4], "5.B結果") + '</div>';
+            html += '</div></div></div>';
+
+            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px;">── 詳細牌意與解析 ──</div>';
+            html += '<div style="width:100%; max-width:395px; margin-bottom:12px;">';
+            html += renderCardNode(cards[0], titles[0], shortLabels[0]);
+            html += '</div>';
+
+            html += '<div class="branch-row" style="width:100%; max-width:900px;">';
+            html += '<div class="branch-col" style="justify-content:flex-start;"><div class="branch-title">── 選擇 A 路線 ──</div>';
+            html += renderCardNode(cards[1], titles[1], shortLabels[1]);
+            html += renderCardNode(cards[2], titles[2], shortLabels[2]);
+            html += '</div>';
+
+            html += '<div class="branch-col" style="justify-content:flex-start;"><div class="branch-title">── 選擇 B 路線 ──</div>';
+            html += renderCardNode(cards[3], titles[3], shortLabels[3]);
+            html += renderCardNode(cards[4], titles[4], shortLabels[4]);
+            html += '</div></div></div>';
+
+            html += renderActionButtons();
             area.innerHTML = html;
         }
 
