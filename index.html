@@ -144,6 +144,7 @@
         .badge-neu { background-color: var(--neu-yellow); }
         .badge-neg { background-color: var(--neg-red); color: #fff; }
         .leno-desc-box { background: #242938; padding: 6px 8px; border-radius: 4px; color: #cbd5e1; margin-top: 2px; line-height: 1.4; }
+        .leno-topic-advice { background: rgba(14, 165, 233, 0.12); border-left: 3px solid #38bdf8; padding: 4px 8px; border-radius: 2px 4px 4px 2px; color: #bae6fd; font-size: 11.5px; line-height: 1.4; margin-top: 2px; }
 
         .supp-toggle-btn {
             background: rgba(139, 92, 246, 0.1); border: 1px solid #8b5cf6; color: #c4b5fd; padding: 6px 12px; 
@@ -238,19 +239,6 @@
                     </select>
                 </div>
 
-                <!-- 🎯 主題占卜專用選擇框 -->
-                <div class="config-box" id="themeSelectBox" style="display: none;">
-                    <span>主題:</span>
-                    <select id="themeCardSelect">
-                        <option value="24">❤️ 愛情 (24.心)</option>
-                        <option value="35">⚓ 事業 (35.錨)</option>
-                        <option value="34">🐟 財富 (34.魚)</option>
-                        <option value="5">🌳 健康 (5.樹)</option>
-                        <option value="26">📖 學業 (26.書)</option>
-                        <option value="20">⛲ 人際 (20.花園)</option>
-                    </select>
-                </div>
-
                 <div class="config-box" id="freeConfigBox" style="display: none;" onclick="promptFreeCount()">
                     <span>張數:</span>
                     <span id="freeCountDisplay" style="color: #fff; padding: 0 4px;">3</span>
@@ -285,6 +273,60 @@
                         <div style="color: #38bdf8; margin-top: 4px;">提醒：若要使用雲端紀錄功能，請點擊右上角登入。</div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎯 主題占卜設定彈窗 (按下開始占卜後跳出) -->
+    <div id="themeModal" class="modal-overlay" onclick="closeThemeModal()">
+        <div class="modal-content" style="max-width: 390px; text-align: center;" onclick="event.stopPropagation()">
+            <div class="modal-header">🎯 主題占卜設定</div>
+            <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 12px;">請選擇代表本次問題的「主題指示牌」與展開張數。<br><span style="color:#38bdf8; font-size:12px;">（選定的主題牌將鎖定置頂，不會在抽牌牌庫中重複出現）</span></div>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; padding: 6px 0;">
+                <!-- 1. 主題模式選擇 -->
+                <div class="config-box" style="width: 92%; justify-content: space-between; padding: 0 10px; height: 38px;">
+                    <span style="flex-shrink:0;">主題類別:</span>
+                    <select id="themePresetSelect" onchange="onThemePresetChange()" style="flex: 1; text-align: right; margin-left: 8px;">
+                        <option value="24">❤️ 愛情感情 (24.心)</option>
+                        <option value="25">💍 婚姻合約 (25.戒指)</option>
+                        <option value="35">⚓ 事業穩定 (35.錨)</option>
+                        <option value="14">🦊 職場策略 (14.狐狸)</option>
+                        <option value="34">🐟 財富資金 (34.魚)</option>
+                        <option value="15">🐻 投資主管 (15.熊)</option>
+                        <option value="5">🌳 健康身心 (5.樹)</option>
+                        <option value="4">🏠 家庭房產 (4.房子)</option>
+                        <option value="26">📖 學業考試 (26.書)</option>
+                        <option value="20">⛲ 人際社交 (20.花園)</option>
+                        <option value="3">⛵ 旅行外派 (3.船)</option>
+                        <option value="28">👨 男性當事人 (28.紳士)</option>
+                        <option value="29">👩 女性當事人 (29.女士)</option>
+                        <option value="custom">✨ 自訂指示牌 (自選牌)</option>
+                    </select>
+                </div>
+
+                <!-- 2. 完整 36 張牌下拉選單 -->
+                <div class="config-box" style="width: 92%; justify-content: space-between; padding: 0 10px; height: 38px;">
+                    <span style="flex-shrink:0;">指定牌卡:</span>
+                    <select id="themeFullCardSelect" onchange="onThemeCardChange()" style="flex: 1; text-align: right; margin-left: 8px;">
+                        <!-- JS 動態載入完整 36 張牌 -->
+                    </select>
+                </div>
+
+                <!-- 3. 動態顯示該牌適合的主題建議 -->
+                <div id="themeModalAdvice" style="width: 92%; background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: #bae6fd; text-align: left; line-height: 1.5;">
+                </div>
+
+                <!-- 4. 輸入展開牌數 (1~9) -->
+                <div class="config-box" style="width: 92%; justify-content: space-between; padding: 0 10px; height: 42px;">
+                    <span style="flex-shrink:0;">展開張數 (1~9):</span>
+                    <input type="number" id="themeDrawCountInput" class="int-num-input" style="width: 70px; height: 32px; font-size: 16px;" min="1" max="9" value="3">
+                </div>
+            </div>
+
+            <div class="action-btn-group" style="margin-top: 18px; margin-bottom: 5px;">
+                <button class="action-btn" onclick="confirmThemeDraw()">確定抽牌</button>
+                <button class="action-btn secondary" onclick="closeThemeModal()">取消</button>
             </div>
         </div>
     </div>
@@ -370,7 +412,7 @@
         const GAS_URL = "https://script.google.com/macros/s/AKfycbwnLAGNlM-eZdb0LoCu7kd1HIoorzJfh8EM1OSX3vfQF_VWBk8AlF625fxH9EmBqPuuSg/exec";
 
         let customCount = 3;
-        let themeCustomCount = 3; // 紀錄主題占卜上次輸入的張數
+        let themeCustomCount = 3; // 紀錄主題占卜輸入的張數
         let currentEmail = localStorage.getItem('leno_email') || "";
         let currentPassword = localStorage.getItem('leno_password') || "";
         let currentUsername = localStorage.getItem('leno_username') || "";
@@ -408,6 +450,7 @@
         window.onload = function() {
             initCounter();
             updateUserDisplay();
+            initThemeCardOptions();
         };
 
         // ====== 帳號與通訊邏輯 ====== //
@@ -733,11 +776,9 @@
             let spreadVal = document.getElementById("spreadSelect").value;
             let isFree = (spreadVal === "free");
             let isNumber = (spreadVal === "number");
-            let isTheme = (spreadVal === "theme");
 
             document.getElementById("freeConfigBox").style.display = isFree ? "flex" : "none";
             document.getElementById("numCountBox").style.display = isNumber ? "flex" : "none";
-            document.getElementById("themeSelectBox").style.display = isTheme ? "flex" : "none";
         }
 
         function resetToHome() {
@@ -760,42 +801,42 @@
         }
 
         const LENORMAND_DECK = [
-            {no: 1, name: "騎士", en: "Rider", file: "rider.avif", suit: "9♥", polarity: "正面", theme: "消息與行動", keywords: ["快速到來的消息", "新訪客", "行動力"]},
-            {no: 2, name: "幸運草", en: "Clover", file: "clover.avif", suit: "6♦", polarity: "正面", theme: "短暫的幸運", keywords: ["小確幸", "意外轉機", "樂觀"]},
-            {no: 3, name: "船", en: "Ship", file: "ship.avif", suit: "10♠", polarity: "正面", theme: "旅行與遠方", keywords: ["長途旅行", "海外發展", "轉變"]},
-            {no: 4, name: "房子", en: "House", file: "house.avif", suit: "K♥", polarity: "正面", theme: "家庭與安定", keywords: ["家庭生活", "安全感", "不動產"]},
-            {no: 5, name: "樹", en: "Tree", file: "tree.avif", suit: "7♥", polarity: "中性", theme: "健康與根基", keywords: ["身心健康", "長期成長", "耐力"]},
-            {no: 6, name: "雲", en: "Clouds", file: "clouds.avif", suit: "K♣", polarity: "負面", theme: "迷茫與陰霾", keywords: ["不明朗", "暫時困擾", "不安"]},
-            {no: 7, name: "蛇", en: "Snake", file: "snake.avif", suit: "Q♣", polarity: "負面", theme: "複雜與心機", keywords: ["轉彎抹角", "嫉妒心", "潛在威脅"]},
-            {no: 8, name: "棺材", en: "Coffin", file: "coffin.avif", suit: "9♦", polarity: "負面", theme: "結束與病痛", keywords: ["重大轉折", "停止", "耗損"]},
-            {no: 9, name: "花束", en: "Bouquet", file: "bouquet.avif", suit: "Q♠", polarity: "正面", theme: "愉悅與禮物", keywords: ["美好驚喜", "人緣", "祝福"]},
-            {no: 10, name: "鐮刀", en: "Scythe", file: "scythe.avif", suit: "J♦", polarity: "負面", theme: "突發與切斷", keywords: ["決定性切割", "意外", "危險"]},
-            {no: 11, name: "鞭子", en: "Whip", file: "whip.avif", suit: "J♣", polarity: "負面", theme: "爭執與重複", keywords: ["摩擦", "爭辯", "重複動作"]},
-            {no: 12, name: "鳥", en: "Birds", file: "birds.avif", suit: "7♦", polarity: "中性", theme: "溝通與焦慮", keywords: ["談話", "電話聯繫", "神經質"]},
-            {no: 13, name: "小孩", en: "Child", file: "child.avif", suit: "J♠", polarity: "正面", theme: "新開始與純真", keywords: ["小巧的事物", "新計畫", "單純"]},
-            {no: 14, name: "狐狸", en: "Fox", file: "fox.avif", suit: "9♣", polarity: "負面", theme: "謀生與心機", keywords: ["工作職場", "小聰明", "防備心"]},
-            {no: 15, name: "熊", en: "Bear", file: "bear.avif", suit: "10♣", polarity: "中性", theme: "力量與財務", keywords: ["主管長輩", "資金", "保護與控制"]},
-            {no: 16, name: "星星", en: "Stars", file: "stars.avif", suit: "6♥", polarity: "正面", theme: "希望與靈感", keywords: ["願望成真", "方向指引", "名氣"]},
-            {no: 17, name: "送子鳥", en: "Stork", file: "stork.avif", suit: "Q♥", polarity: "正面", theme: "改變與搬遷", keywords: ["調整", "改善", "新環境"]},
-            {no: 18, name: "狗", en: "Dog", file: "dog.avif", suit: "10♥", polarity: "正面", theme: "忠誠與友情", keywords: ["可靠夥伴", "信任", "長期陪伴"]},
-            {no: 19, name: "塔", en: "Tower", file: "tower.avif", suit: "6♠", polarity: "中性", theme: "體制與孤立", keywords: ["大型機構", "獨處", "權威格局"]},
-            {no: 20, name: "花園", en: "Garden", file: "garden.avif", suit: "8♠", polarity: "正面", theme: "社交與公眾", keywords: ["公眾場合", "聚會", "網路社群"]},
-            {no: 21, name: "山", en: "Mountain", file: "mountain.avif", suit: "8♣", polarity: "負面", theme: "阻礙與僵局", keywords: ["跨不過的檻", "延遲", "冷漠對立"]},
-            {no: 22, name: "十字路口", en: "Crossroad", file: "crossroad.avif", suit: "D♦", polarity: "中性", theme: "抉擇與分岔", keywords: ["多重選項", "分歧點", "自主決定"]},
-            {no: 23, name: "老鼠", en: "Mice", file: "mice.avif", suit: "7♣", polarity: "負面", theme: "壓力與消耗", keywords: ["壓力累積", "遺失損耗", "焦慮侵蝕"]},
-            {no: 24, name: "心", en: "Heart", file: "heart.avif", suit: "J♥", polarity: "正面", theme: "情感與熱情", keywords: ["真愛", "熱忱", "心之所向"]},
-            {no: 25, name: "戒指", en: "Ring", file: "ring.avif", suit: "A♣", polarity: "正面", theme: "承諾與合約", keywords: ["合作契約", "婚姻關係", "循環往復"]},
-            {no: 26, name: "書", en: "Book", file: "book.avif", suit: "10♦", polarity: "中性", theme: "秘密與知識", keywords: ["未公開資訊", "學習研究", "專業證照"]},
-            {no: 27, name: "信", en: "Letter", file: "letter.avif", suit: "7♠", polarity: "中性", theme: "文件與通知", keywords: ["正式通知", "訊息檔案", "合約書面"]},
-            {no: 28, name: "紳士", en: "Gentleman", file: "gentleman.avif", suit: "A♠", polarity: "中性", theme: "男性當事人", keywords: ["男性友人", "伴侶", "理性思維"]},
-            {no: 29, name: "女士", en: "Lady", file: "lady.avif", suit: "A♥", polarity: "中性", theme: "女性當事人", keywords: ["女性友人", "求問者自身", "感性直覺"]},
-            {no: 30, name: "百合", en: "Lily", file: "lily.avif", suit: "K♠", polarity: "正面", theme: "成熟與平靜", keywords: ["資深經驗", "內心平靜", "性靈收穫"]},
-            {no: 31, name: "太陽", en: "Sun", file: "sun.avif", suit: "A♦", polarity: "正面", theme: "成功與能量", keywords: ["極佳活力", "榮耀勝利", "絕對光明"]},
-            {no: 32, name: "月亮", en: "Moon", file: "moon.avif", suit: "8♥", polarity: "中性", theme: "情感與名聲", keywords: ["情緒波動", "潛意識", "形象名望"]},
-            {no: 33, name: "鑰匙", en: "Key", file: "key.avif", suit: "8♦", polarity: "正面", theme: "解答與關鍵", keywords: ["突破口", "絕對重要", "必然發生"]},
-            {no: 34, name: "魚", en: "Fish", file: "fish.avif", suit: "K♦", polarity: "正面", theme: "財富與流動", keywords: ["金錢收益", "商業貿易", "資源豐沛"]},
-            {no: 35, name: "錨", en: "Anchor", file: "anchor.avif", suit: "9♠", polarity: "正面", theme: "穩定與深耕", keywords: ["長期定局", "職場穩定", "堅持信念"]},
-            {no: 36, name: "十字架", en: "Cross", file: "cross.avif", suit: "6♣", polarity: "負面", theme: "宿命與考驗", keywords: ["不可避免的負擔", "精神洗禮", "信仰考驗"]}
+            {no: 1, name: "騎士", en: "Rider", file: "rider.avif", suit: "9♥", polarity: "正面", theme: "消息與行動", topicAdvice: "等待音訊、物流包裹、新進展、交通工具、主動出擊", keywords: ["快速到來的消息", "新訪客", "行動力"]},
+            {no: 2, name: "幸運草", en: "Clover", file: "clover.avif", suit: "6♦", polarity: "正面", theme: "短暫的幸運", topicAdvice: "短期小確幸、彩券抽獎、意外轉機、臨門一腳的機會", keywords: ["小確幸", "意外轉機", "樂觀"]},
+            {no: 3, name: "船", en: "Ship", file: "ship.avif", suit: "10♠", polarity: "正面", theme: "旅行與遠方", topicAdvice: "出國旅遊、外派留學、跨國貿易、遠距離關係、人生轉變", keywords: ["長途旅行", "海外發展", "轉變"]},
+            {no: 4, name: "房子", en: "House", file: "house.avif", suit: "K♥", polarity: "正面", theme: "家庭與安定", topicAdvice: "家庭關係、買房租屋、不動產買賣、居家環境、核心安全感", keywords: ["家庭生活", "安全感", "不動產"]},
+            {no: 5, name: "樹", en: "Tree", file: "tree.avif", suit: "7♥", polarity: "中性", theme: "健康與根基", topicAdvice: "身心健康狀況、長期養生、家族根基、需要耐心扎根的長期計畫", keywords: ["身心健康", "長期成長", "耐力"]},
+            {no: 6, name: "雲", en: "Clouds", file: "clouds.avif", suit: "K♣", polarity: "負面", theme: "迷茫與陰霾", topicAdvice: "局勢不明朗的困惑、內心矛盾、誤會釐清、暫時性混亂", keywords: ["不明朗", "暫時困擾", "不安"]},
+            {no: 7, name: "蛇", en: "Snake", file: "snake.avif", suit: "Q♣", polarity: "負面", theme: "複雜與心機", topicAdvice: "競爭對手、小人防範、三角或複雜關係、暗中危機與誘惑", keywords: ["轉彎抹角", "嫉妒心", "潛在威脅"]},
+            {no: 8, name: "棺材", en: "Coffin", file: "coffin.avif", suit: "9♦", polarity: "負面", theme: "結束與病痛", topicAdvice: "關係或計畫的終結、徹底斷捨離、重大轉折期、瓶頸停滯", keywords: ["重大轉折", "停止", "耗損"]},
+            {no: 9, name: "花束", en: "Bouquet", file: "bouquet.avif", suit: "Q♠", polarity: "正面", theme: "愉悅與禮物", topicAdvice: "社交人緣、約會告白、美學藝術、魅力展現、意外驚喜與饋贈", keywords: ["美好驚喜", "人緣", "祝福"]},
+            {no: 10, name: "鐮刀", en: "Scythe", file: "scythe.avif", suit: "J♦", polarity: "負面", theme: "突發與切斷", topicAdvice: "果斷決策、快刀斬亂麻、突發變故、手術外傷、關係切割", keywords: ["決定性切割", "意外", "危險"]},
+            {no: 11, name: "鞭子", en: "Whip", file: "whip.avif", suit: "J♣", polarity: "負面", theme: "爭執與重複", topicAdvice: "爭吵摩擦、體能訓練、運動健身、反覆發生的困擾、肉體親密關係", keywords: ["摩擦", "爭辯", "重複動作"]},
+            {no: 12, name: "鳥", en: "Birds", file: "birds.avif", suit: "7♦", polarity: "中性", theme: "溝通與焦慮", topicAdvice: "面試會談、日常溝通、流言八卦、伴侶對話、短期焦慮與奔波", keywords: ["談話", "電話聯繫", "神經質"]},
+            {no: 13, name: "小孩", en: "Child", file: "child.avif", suit: "J♠", polarity: "正面", theme: "新開始與純真", topicAdvice: "子女孕事、新創起步、初學階段、純真戀情、從零開始的新事物", keywords: ["小巧的事物", "新計畫", "單純"]},
+            {no: 14, name: "狐狸", en: "Fox", file: "fox.avif", suit: "9♣", polarity: "負面", theme: "謀生與心機", topicAdvice: "日常職場生存、商業謀略、防範欺瞞、斜槓兼職、利益精算", keywords: ["工作職場", "小聰明", "防備心"]},
+            {no: 15, name: "熊", en: "Bear", file: "bear.avif", suit: "10♣", polarity: "中性", theme: "力量與財務", topicAdvice: "主管老闆、長輩母親、資產大筆投資、權力掌控、財務保護", keywords: ["主管長輩", "資金", "保護與控制"]},
+            {no: 16, name: "星星", en: "Stars", file: "stars.avif", suit: "6♥", polarity: "正面", theme: "希望與靈感", topicAdvice: "理想願景、網路名聲、靈性占卜、長遠目標規劃、療癒與希望", keywords: ["願望成真", "方向指引", "名氣"]},
+            {no: 17, name: "送子鳥", en: "Stork", file: "stork.avif", suit: "Q♥", polarity: "正面", theme: "改變與搬遷", topicAdvice: "搬家喬遷、職務調動、現狀升級改善、懷孕生產、生活步調轉換", keywords: ["調整", "改善", "新環境"]},
+            {no: 18, name: "狗", en: "Dog", file: "dog.avif", suit: "10♥", polarity: "正面", theme: "忠誠與友情", topicAdvice: "知心好友、合作夥伴、寵物狀況、忠誠度考驗、貴人扶持", keywords: ["可靠夥伴", "信任", "長期陪伴"]},
+            {no: 19, name: "塔", en: "Tower", file: "tower.avif", suit: "6♠", polarity: "中性", theme: "體制與孤立", topicAdvice: "公家機關、大型企業、法律規章、高層體制、獨立自主與孤獨感", keywords: ["大型機構", "獨處", "權威格局"]},
+            {no: 20, name: "花園", en: "Garden", file: "garden.avif", suit: "8♠", polarity: "正面", theme: "社交與公眾", topicAdvice: "公眾形象、社群經營、公開活動、人脈拓展、聚會派對與客戶群", keywords: ["公眾場合", "聚會", "網路社群"]},
+            {no: 21, name: "山", en: "Mountain", file: "mountain.avif", suit: "8♣", polarity: "負面", theme: "阻礙與僵局", topicAdvice: "重大瓶頸阻礙、冷戰僵局、拖延停滯、跨不過的難關與挑戰", keywords: ["跨不過的檻", "延遲", "冷漠對立"]},
+            {no: 22, name: "十字路口", en: "Crossroad", file: "crossroad.avif", suit: "D♦", polarity: "中性", theme: "抉擇與分岔", topicAdvice: "人生分岔路、多重方案抉擇、轉職跳槽、兼差多工、猶豫不決", keywords: ["多重選項", "分歧點", "自主決定"]},
+            {no: 23, name: "老鼠", en: "Mice", file: "mice.avif", suit: "7♣", polarity: "負面", theme: "壓力與消耗", topicAdvice: "精神內耗焦慮、財務漏洞、物品遺失、健康慢性耗損、倦怠感", keywords: ["壓力累積", "遺失損耗", "焦慮侵蝕"]},
+            {no: 24, name: "心", en: "Heart", file: "heart.avif", suit: "J♥", polarity: "正面", theme: "情感與熱情", topicAdvice: "戀愛桃花、伴侶感情、內心真正熱愛的事物、情感關係核心", keywords: ["真愛", "熱忱", "心之所向"]},
+            {no: 25, name: "戒指", en: "Ring", file: "ring.avif", suit: "A♣", polarity: "正面", theme: "承諾與合約", topicAdvice: "婚姻盟約、商業簽約、長期合作關係、穩定承諾、循環模式", keywords: ["合作契約", "婚姻關係", "循環往復"]},
+            {no: 26, name: "書", en: "Book", file: "book.avif", suit: "10♦", polarity: "中性", theme: "秘密與知識", topicAdvice: "學業考試、專業進修、不為人知的秘密、幕後真相、研究計畫", keywords: ["未公開資訊", "學習研究", "專業證照"]},
+            {no: 27, name: "信", en: "Letter", file: "letter.avif", suit: "7♠", polarity: "中性", theme: "文件與通知", topicAdvice: "正式文書、錄取通知、合約條文、證書執照、書面文字訊息", keywords: ["正式通知", "訊息檔案", "合約書面"]},
+            {no: 28, name: "紳士", en: "Gentleman", file: "gentleman.avif", suit: "A♠", polarity: "中性", theme: "男性當事人", topicAdvice: "男性問卜者本人、心儀男性對象、男伴侶、關鍵男性人物", keywords: ["男性友人", "伴侶", "理性思維"]},
+            {no: 29, name: "女士", en: "Lady", file: "lady.avif", suit: "A♥", polarity: "中性", theme: "女性當事人", topicAdvice: "女性問卜者本人、心儀女性對象、女伴侶、關鍵女性人物", keywords: ["女性友人", "求問者自身", "感性直覺"]},
+            {no: 30, name: "百合", en: "Lily", file: "lily.avif", suit: "K♠", polarity: "正面", theme: "成熟與平靜", topicAdvice: "退休養老、長輩貴人、心靈平靜、長期資歷、成熟的愛與慢活", keywords: ["資深經驗", "內心平靜", "性靈收穫"]},
+            {no: 31, name: "太陽", en: "Sun", file: "sun.avif", suit: "A♦", polarity: "正面", theme: "成功與能量", topicAdvice: "目標達成、榮耀勝訴、自信展現、領導魅力、真相大白與高能量", keywords: ["極佳活力", "榮耀勝利", "絕對光明"]},
+            {no: 32, name: "月亮", en: "Moon", file: "moon.avif", suit: "8♥", polarity: "中性", theme: "情感與名聲", topicAdvice: "潛意識情緒、暗戀曖昧、藝術直覺、職場名譽口碑、夜晚的思緒", keywords: ["情緒波動", "潛意識", "形象名望"]},
+            {no: 33, name: "鑰匙", en: "Key", file: "key.avif", suit: "8♦", polarity: "正面", theme: "解答與關鍵", topicAdvice: "問題核心解答、關鍵突破口、核心機密、命中注定的重要事件", keywords: ["突破口", "絕對重要", "必然發生"]},
+            {no: 34, name: "魚", en: "Fish", file: "fish.avif", suit: "K♦", polarity: "正面", theme: "財富與流動", topicAdvice: "正偏財運、現金流、商業買賣、自由業、豐沛資源與投資獲利", keywords: ["金錢收益", "商業貿易", "資源豐沛"]},
+            {no: 35, name: "錨", en: "Anchor", file: "anchor.avif", suit: "9♠", polarity: "正面", theme: "穩定與深耕", topicAdvice: "事業根基、長期穩定發展、定居落腳、安全感、堅守崗位與承諾", keywords: ["長期定局", "職場穩定", "堅持信念"]},
+            {no: 36, name: "十字架", en: "Cross", file: "cross.avif", suit: "6♣", polarity: "負面", theme: "宿命與考驗", topicAdvice: "重大人生課題、業力考驗、宗教信仰、沉重責任與不得不面對的難關", keywords: ["不可避免的負擔", "精神洗禮", "信仰考驗"]}
         ];
 
         function shuffle(array) {
@@ -836,7 +877,7 @@
             return "./";
         }
 
-        // ====== 牌卡 HTML 渲染工廠 ====== //
+        // ====== 牌卡 HTML 渲染工廠 (含此牌適合的主題建議) ====== //
         function renderCardNode(card, posTitle, nodeLabel, isSupp = false) {
             let nodeId = "node-" + (++globalCardCounter);
             let domId = "card-wrapper-" + nodeId;
@@ -864,6 +905,7 @@
                                 </div>
                                 <div style="color: #38bdf8;">▸ 撲克對應：${card.suit}</div>
                                 <div style="color: #cbd5e1;">▸ 核心主題：${card.theme}</div>
+                                <div class="leno-topic-advice">💡 適合主題：${card.topicAdvice}</div>
                                 <div class="leno-desc-box">▸ 現實關鍵字：${card.keywords.join('、')}</div>
                             </div>
                         </div>
@@ -975,6 +1017,121 @@
             }
         }
 
+        // ====== 🎯 主題占卜彈窗與 36 張自訂指示牌系統 ====== //
+        function initThemeCardOptions() {
+            let fullSelect = document.getElementById("themeFullCardSelect");
+            if (!fullSelect) return;
+            fullSelect.innerHTML = "";
+            LENORMAND_DECK.forEach(c => {
+                let opt = document.createElement("option");
+                opt.value = c.no;
+                opt.textContent = `[${String(c.no).padStart(2,'0')}] ${c.name} (${c.en}) - ${c.theme}`;
+                fullSelect.appendChild(opt);
+            });
+            fullSelect.value = "24"; // 預設對齊 24.心
+            updateThemeModalAdvice(24);
+        }
+
+        function showThemeModal() {
+            let fullSelect = document.getElementById("themeFullCardSelect");
+            if (fullSelect && fullSelect.options.length === 0) {
+                initThemeCardOptions();
+            }
+            document.getElementById("themeDrawCountInput").value = themeCustomCount;
+            onThemeCardChange();
+            document.getElementById("themeModal").style.display = "flex";
+        }
+
+        function closeThemeModal() {
+            document.getElementById("themeModal").style.display = "none";
+        }
+
+        function onThemePresetChange() {
+            let presetVal = document.getElementById("themePresetSelect").value;
+            let fullSelect = document.getElementById("themeFullCardSelect");
+            if (presetVal !== "custom") {
+                fullSelect.value = presetVal;
+                updateThemeModalAdvice(parseInt(presetVal));
+            }
+        }
+
+        function onThemeCardChange() {
+            let cardNo = parseInt(document.getElementById("themeFullCardSelect").value);
+            let presetSelect = document.getElementById("themePresetSelect");
+            let matchOption = Array.from(presetSelect.options).find(opt => opt.value === String(cardNo));
+            if (matchOption) {
+                presetSelect.value = String(cardNo);
+            } else {
+                presetSelect.value = "custom";
+            }
+            updateThemeModalAdvice(cardNo);
+        }
+
+        function updateThemeModalAdvice(cardNo) {
+            let card = LENORMAND_DECK.find(c => c.no === cardNo);
+            let adviceBox = document.getElementById("themeModalAdvice");
+            if (card && adviceBox) {
+                adviceBox.innerHTML = `
+                    <div style="font-weight:bold; color:#38bdf8; margin-bottom:2px;">💡 [${String(card.no).padStart(2,'0')} ${card.name}] 適合設定的主題：</div>
+                    <div>${card.topicAdvice}</div>
+                `;
+            }
+        }
+
+        function confirmThemeDraw() {
+            let themeNo = parseInt(document.getElementById("themeFullCardSelect").value);
+            let countInput = document.getElementById("themeDrawCountInput").value.trim();
+            let count = parseInt(countInput);
+
+            if (isNaN(count) || count < 1 || count > 9) {
+                alert("請輸入有效的展開張數 (1 到 9 張之間)！");
+                return;
+            }
+            themeCustomCount = count;
+            closeThemeModal();
+
+            // 1. 初始化洗牌
+            initDeck();
+            // 2. 先將選定的主題牌從牌庫中單獨抽出（確保後續抽牌與補充牌絕不重複出現）
+            let themeCard = drawSpecificCardFromDeck(themeNo);
+            // 3. 抽取剩餘展開牌
+            let spreadCards = drawCardsFromDeck(count);
+
+            let area = document.getElementById("spreadArea");
+            area.classList.add("is-wide");
+
+            let presetSelect = document.getElementById("themePresetSelect");
+            let themeTitle = "";
+            if (presetSelect.value !== "custom") {
+                let rawText = presetSelect.options[presetSelect.selectedIndex].textContent;
+                themeTitle = rawText.split('(')[0].trim();
+            } else {
+                themeTitle = `自訂主題 [${String(themeCard.no).padStart(2,'0')}.${themeCard.name}]`;
+            }
+
+            let html = `<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🎯 主題占卜：${themeTitle} (展開 ${count} 張) 】</h2>`;
+            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:16px; width:100%;">';
+            
+            // 指示牌置頂
+            html += `<div style="width:100%; max-width:395px; margin-bottom:10px;">`;
+            html += renderCardNode(themeCard, "【指示牌：主題核心】此牌代表您所詢問的主題能量", "主題牌");
+            html += `</div>`;
+            
+            // 展開的發展牌
+            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px;">── 發展解析與指引 ──</div>';
+            
+            html += '<div class="branch-row" style="width:100%; max-width:1250px; gap: 16px;">';
+            spreadCards.forEach((c, idx) => { 
+                html += `<div class="branch-col" style="justify-content:flex-start;">`;
+                html += renderCardNode(c, `展開牌 ${idx+1}`, `展開 ${idx+1}`); 
+                html += `</div>`;
+            });
+            html += '</div></div>';
+            
+            html += renderActionButtons();
+            area.innerHTML = html;
+        }
+
         // ====== 直覺數字輸入彈窗系統 ====== //
         function showIntuitiveModal() {
             let count = parseInt(document.getElementById("intuitiveCount").value) || 3;
@@ -1039,11 +1196,11 @@
         function executeDraw() {
             let spreadVal = document.getElementById("spreadSelect").value;
             if (spreadVal === "number") showIntuitiveModal();
+            else if (spreadVal === "theme") showThemeModal();
             else if (spreadVal === "diary") drawDailyDiary();
             else if (spreadVal === "two") drawTwoChoices();
             else if (spreadVal === "line3") drawLine3();
             else if (spreadVal === "box9") drawBox9();
-            else if (spreadVal === "theme") drawThemeSpread();
             else if (spreadVal === "free") drawFreeSpread();
         }
 
@@ -1112,7 +1269,7 @@
             let titles = ["【現狀核心】", "【選擇 A · 過程】", "【選擇 A · 結果】", "【選擇 B · 過程】", "【選擇 B · 結果】"];
             let shortLabels = ["1.現狀", "2.A過程", "3.A結果", "4.B過程", "5.B結果"];
 
-            let html = '<h2 style="color:#f8fafc; margin-bottom:4px; text-align:center; width:100%;">【 ⚖️ 二 擇 一 抉 擇 牌 陣 】</h2>';
+            let html = '<h2 style="color:#f8fafc; margin-bottom:4px; text-align:center; width:100%;">【 ⚖️ 二 擇 一 牌 陣 】</h2>';
             html += '<div style="display:flex; flex-direction:column; gap:16px; width:100%; align-items:center;">';
 
             /* 手機版專屬牌面總覽：二擇一幾何排版 */
@@ -1205,51 +1362,6 @@
             cards.forEach((c, idx) => { html += renderCardNode(c, `第 ${idx+1} 張牌`, `第 ${idx+1} 張`); });
             html += '</div>' + renderActionButtons();
             
-            area.innerHTML = html;
-        }
-
-        // 🎯 主題占卜繪製（按下抽牌時詢問張數 1~9 張）
-        function drawThemeSpread() {
-            let input = prompt("請輸入主題展開張數 (1 - 9)：", themeCustomCount);
-            if (input === null) return; // 使用者按取消則中止抽牌
-
-            let count = parseInt(input);
-            if (isNaN(count) || count < 1 || count > 9) {
-                alert("請輸入有效的數字 (1 到 9 之間)");
-                return;
-            }
-            themeCustomCount = count;
-
-            initDeck();
-            let themeNo = parseInt(document.getElementById("themeCardSelect").value);
-            let themeCard = drawSpecificCardFromDeck(themeNo); 
-            let spreadCards = drawCardsFromDeck(count); 
-
-            let area = document.getElementById("spreadArea");
-            area.classList.add("is-wide"); 
-
-            let themeName = document.querySelector("#themeCardSelect option:checked").textContent.split(' ')[0].replace(/[^a-zA-Z\u4E00-\u9FFF]/g, '');
-
-            let html = `<h2 style="color:#f8fafc; margin-bottom:8px; text-align:center;">【 🎯 主題占卜：${themeName} (展開 ${count} 張) 】</h2>`;
-            html += '<div style="display:flex; flex-direction:column; align-items:center; gap:16px; width:100%;">';
-            
-            // 指示牌置頂
-            html += `<div style="width:100%; max-width:395px; margin-bottom:10px;">`;
-            html += renderCardNode(themeCard, "【指示牌：主題核心】此牌代表您所詢問的主題能量", "主題牌");
-            html += `</div>`;
-            
-            // 展開的發展牌
-            html += '<div style="font-size:13px; color:#38bdf8; font-weight:bold; margin-top:6px;">── 發展解析與指引 ──</div>';
-            
-            html += '<div class="branch-row" style="width:100%; max-width:1250px; gap: 16px;">';
-            spreadCards.forEach((c, idx) => { 
-                html += `<div class="branch-col" style="justify-content:flex-start;">`;
-                html += renderCardNode(c, `展開牌 ${idx+1}`, `展開 ${idx+1}`); 
-                html += `</div>`;
-            });
-            html += '</div></div>';
-            
-            html += renderActionButtons();
             area.innerHTML = html;
         }
     </script>
